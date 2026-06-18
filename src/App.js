@@ -1,0 +1,1236 @@
+import { useState, useMemo } from "react";
+import JSZip from "jszip";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis } from "recharts";
+import attestationData from "./data.json";
+import profilesData from "./profiles.json";
+import aosRaw from "./AOs.json";
+const { ATTS_PR, ATTS_D1 } = attestationData;
+const AOS = Array.isArray(aosRaw) ? aosRaw : (aosRaw.results || []);
+
+const D1_LOGO = "data:image/png;base64,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";
+const PR_LOGO = "data:image/png;base64,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";
+
+const THEMES = {
+  PR: { key:"PR", name:"PR Media", sub:"Burson affiliate", accent:"#E8392A", navy:"#1C2B4B" },
+  D1: { key:"D1", name:"D1 Social", sub:"360° Communications", accent:"#F7BE00", navy:"#1C2B4B" },
+};
+const W="#FFFFFF", BG="#F7F6F3", BD="#E0DDD7", MU="#9A9590", LT="#EDEAE4";
+
+const fmt     = (m,d) => !m?"—":(m>=1e6?(m/1e6).toFixed(1)+"M":Math.round(m/1000)+"K")+" DH "+d;
+const fmtFull = (m,d) => !m?"Non précisé":new Intl.NumberFormat("fr-MA").format(Math.round(m))+" DH "+d;
+const driveUrl = fid  => `https://drive.google.com/file/d/${fid}/view`;
+
+function groupBy(list) {
+  const map={};
+  list.forEach(a=>{if(!map[a.ann])map[a.ann]={ann:a.ann,sec:a.sec,items:[]};map[a.ann].items.push(a);});
+  return Object.values(map).sort((a,b)=>b.items.reduce((s,x)=>s+(x.m||0),0)-a.items.reduce((s,x)=>s+(x.m||0),0));
+}
+
+const IcLink  = ()=><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>;
+const IcGrid  = ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>;
+const IcFind  = ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
+const IcSrch  = ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9A9590" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
+const IcBurger= ()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>;
+const IcClose = ()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
+const IcFilter= ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
+const IcUsers = ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>;
+const IcDl    = ()=><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>;
+const IcDoc   = ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>;
+
+function Logo({ theme, size=38 }) {
+  return <img src={theme.key==="D1"?D1_LOGO:PR_LOGO} width={size} height={size} alt={theme.name} style={{objectFit:"contain",display:"block",flexShrink:0}}/>;
+}
+
+function AgencySwitcher({ agency, onChange }) {
+  return (
+    <div style={{display:"flex",background:LT,borderRadius:8,padding:3,gap:2}}>
+      {Object.values(THEMES).map(t=>(
+        <button key={t.key} onClick={()=>onChange(t.key)} style={{
+          padding:"6px 14px",borderRadius:6,border:"none",cursor:"pointer",
+          fontFamily:"inherit",fontSize:12,fontWeight:700,whiteSpace:"nowrap",
+          background:agency===t.key?t.accent:"transparent",
+          color:agency===t.key?(t.key==="D1"?"#1C2B4B":"#fff"):MU,
+          transition:"all .18s",
+        }}>{t.name}</button>
+      ))}
+    </div>
+  );
+}
+
+const CTip=({active,payload,label})=>{
+  if(!active||!payload?.length)return null;
+  return <div style={{background:"#1C2B4B",color:"#fff",padding:"8px 13px",borderRadius:6,fontSize:12}}><div style={{color:"rgba(255,255,255,.6)",marginBottom:2,fontSize:11}}>{label}</div><div style={{fontWeight:700}}>{payload[0].value}M DH</div></div>;
+};
+
+// ─── AO HELPERS ──────────────────────────────────────────────────────────────
+const AO_ACCENT = "#1C5B7A";
+const AO_MODE_COLOR = { AOO:"#E8392A", AOS:"#6B7FA3", AMI:"#C4A882" };
+
+function cleanIntitule(s) {
+  if (!s) return "";
+  const i = s.indexOf(" ... ");
+  return (i > 0 ? s.slice(0, i) : s).trim();
+}
+function parseDeadline(s) {
+  if (!s) return null;
+  const m = s.match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})/);
+  return m ? new Date(+m[3], +m[2]-1, +m[1], +m[4], +m[5]) : null;
+}
+function parseMAD(s) {
+  if (!s || typeof s !== "string") return null;
+  const n = parseFloat(s.replace(/MAD/g,"").replace(/\s/g,"").replace(",","."));
+  return isNaN(n) || n === 0 ? null : n;
+}
+const parseEstimation = parseMAD;
+const parseCaution    = parseMAD;
+function daysUntil(d) {
+  if (!d) return null;
+  return Math.ceil((d - new Date()) / 864e5);
+}
+function fmtMAD(n) {
+  if (!n) return null;
+  return n >= 1e6 ? (n/1e6).toFixed(2)+"M DH" : Math.round(n/1000)+"K DH";
+}
+function cleanMode(s) {
+  return s ? s.replace(/^\|\s*/,"").trim() : "";
+}
+
+// ─── DASHBOARD ────────────────────────────────────────────────────────────────
+function Dashboard({ atts, theme }) {
+  const A=theme.accent;
+  const total=atts.filter(a=>a.m).reduce((s,a)=>s+a.m,0);
+  const anns=[...new Set(atts.map(a=>a.ann))];
+  const maxM=[...atts].filter(a=>a.m).sort((a,b)=>b.m-a.m)[0]?.m||1;
+
+  const barData=groupBy(atts).slice(0,8).map(g=>({
+    name:g.ann.length>13?g.ann.slice(0,12)+"…":g.ann,
+    val:parseFloat((g.items.reduce((s,a)=>s+(a.m||0),0)/1e6).toFixed(2)),
+  })).filter(d=>d.val>0);
+
+  const typeCount={};
+  atts.forEach(a=>(Array.isArray(a.type)?a.type:[]).forEach(t=>{typeCount[t]=(typeCount[t]||0)+1;}));
+  const COLORS=[A,"#1C2B4B","#C4A882","#6B7FA3","#A0522D","#4A6741","#8B6914","#2E5C8A"];
+  const pieData=Object.entries(typeCount).sort((a,b)=>b[1]-a[1]).map(([name,value],i)=>({name,value,color:COLORS[i%COLORS.length]}));
+
+  const yearCount={};
+  atts.forEach(a=>{yearCount[a.yr]=(yearCount[a.yr]||0)+1;});
+  const timeData=Object.entries(yearCount).sort((a,b)=>+a[0]-+b[0]).map(([year,nb])=>({year,nb}));
+
+  const secCount={};
+  atts.forEach(a=>{secCount[a.sec]=(secCount[a.sec]||0)+1;});
+  const radarData=Object.entries(secCount).map(([sec,val])=>({sec:sec.length>10?sec.slice(0,9)+"…":sec,val}));
+
+  const kpis=[
+    ["Attestations",atts.length,"dossiers Drive"],
+    ["Annonceurs",anns.length,"clients"],
+    ["Volume","+"+(Math.round(total/1e6)||"<1")+"M DH","prestations"],
+    ["Récent",Math.max(...atts.map(a=>a.yr)),""],
+  ];
+
+  return (
+    <div style={{animation:"fi .4s ease"}}>
+      {/* KPIs */}
+      <div className="kpi-grid">
+        {kpis.map(([label,val,sub],i)=>(
+          <div key={i} style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"16px",borderLeft:`4px solid ${A}`}}>
+            <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>{label}</div>
+            <div style={{fontSize:22,fontWeight:800,color:"#1C2B4B",fontFamily:"Georgia,serif",lineHeight:1}}>{val}</div>
+            {sub&&<div style={{fontSize:10,color:MU,marginTop:4}}>{sub}</div>}
+          </div>
+        ))}
+      </div>
+
+      {/* Graphes — tous en colonne sur mobile, 2 colonnes sur desktop */}
+      <div className="chart-col">
+
+        {/* Bar + Pie côte à côte sur desktop */}
+        <div className="chart-row-1">
+        <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"18px 16px"}}>
+          <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:14}}>Volume par annonceur (M DH)</div>
+          {barData.length===0
+            ? <div style={{color:MU,fontSize:12,textAlign:"center",padding:30}}>Données insuffisantes</div>
+            : <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={barData} margin={{top:0,right:4,left:-18,bottom:0}} barCategoryGap="28%">
+                  <XAxis dataKey="name" tick={{fontSize:9,fill:MU}} axisLine={false} tickLine={false}/>
+                  <YAxis tick={{fontSize:9,fill:MU}} axisLine={false} tickLine={false}/>
+                  <Tooltip content={<CTip/>} cursor={{fill:`${A}08`}}/>
+                  <Bar dataKey="val" radius={[4,4,0,0]}>
+                    {barData.map((_,i)=><Cell key={i} fill={i===0?A:i===1?"#1C2B4B":"#C4A882"}/>)}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+          }
+        </div>
+
+        {/* Pie + légende */}
+        <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"18px 16px"}}>
+          <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:12}}>Types de prestation</div>
+          <div style={{display:"flex",gap:16,alignItems:"center",flexWrap:"wrap"}}>
+            <ResponsiveContainer width={140} height={140}>
+              <PieChart>
+                <Pie data={pieData} cx="50%" cy="50%" innerRadius={36} outerRadius={60} dataKey="value" paddingAngle={2}>
+                  {pieData.map((e,i)=><Cell key={i} fill={e.color}/>)}
+                </Pie>
+                <Tooltip formatter={(v,n)=>[`${v} réf.`,n]} contentStyle={{fontSize:11,borderRadius:6,border:`1px solid ${BD}`}}/>
+              </PieChart>
+            </ResponsiveContainer>
+            <div style={{flex:1,display:"flex",flexDirection:"column",gap:6,minWidth:120}}>
+              {pieData.slice(0,6).map((d,i)=>(
+                <div key={i} style={{display:"flex",alignItems:"center",gap:7}}>
+                  <div style={{width:8,height:8,borderRadius:2,background:d.color,flexShrink:0}}/>
+                  <div style={{fontSize:11,color:"#1C2B4B",flex:1}}>{d.name}</div>
+                  <div style={{fontSize:11,color:MU,fontWeight:600}}>{d.value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        </div>{/* end chart-row-1 */}
+
+        {/* Timeline + Radar */}
+        <div className="chart-pair">
+          <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"18px 16px"}}>
+            <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:14}}>Attestations par année</div>
+            <ResponsiveContainer width="100%" height={150}>
+              <BarChart data={timeData} margin={{top:0,right:4,left:-22,bottom:0}} barCategoryGap="40%">
+                <XAxis dataKey="year" tick={{fontSize:10,fill:MU}} axisLine={false} tickLine={false}/>
+                <YAxis tick={{fontSize:9,fill:MU}} axisLine={false} tickLine={false} allowDecimals={false}/>
+                <Tooltip contentStyle={{fontSize:11,borderRadius:6,border:`1px solid ${BD}`}} formatter={v=>[v+" réf.",""]}/>
+                <Bar dataKey="nb" fill="#1C2B4B" radius={[4,4,0,0]}/>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"18px 16px"}}>
+            <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:6}}>Couverture sectorielle</div>
+            <ResponsiveContainer width="100%" height={170}>
+              <RadarChart data={radarData} margin={{top:10,right:16,left:16,bottom:10}}>
+                <PolarGrid stroke={BD}/>
+                <PolarAngleAxis dataKey="sec" tick={{fontSize:9,fill:MU}}/>
+                <Radar dataKey="val" stroke={A} fill={A} fillOpacity={0.2} strokeWidth={2}/>
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Top 5 */}
+        <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"18px 16px"}}>
+          <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:14}}>Top 5 par montant</div>
+          {[...atts].filter(a=>a.m).sort((a,b)=>b.m-a.m).slice(0,5).map((a,i)=>(
+            <div key={a.id} style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
+              <div style={{width:24,height:24,borderRadius:"50%",background:i===0?A:"#1C2B4B",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,color:i===0&&theme.key==="D1"?"#1C2B4B":W,fontWeight:700,flexShrink:0}}>{i+1}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:6,marginBottom:4}}>
+                  <span style={{fontSize:12,fontWeight:700,color:"#1C2B4B",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:"55%"}}>{a.ann}</span>
+                  <span style={{fontSize:11,fontWeight:700,color:A,flexShrink:0}}>{fmt(a.m,a.dv)}</span>
+                </div>
+                <div style={{height:5,background:LT,borderRadius:3,overflow:"hidden"}}>
+                  <div style={{width:`${(a.m/maxM)*100}%`,height:"100%",background:i===0?A:"#1C2B4B",borderRadius:3}}/>
+                </div>
+                <div style={{fontSize:10,color:MU,marginTop:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{a.lbl}</div>
+              </div>
+              <a href={driveUrl(a.fid)} target="_blank" rel="noopener noreferrer"
+                style={{flexShrink:0,width:32,height:32,borderRadius:6,background:LT,border:`1px solid ${BD}`,display:"flex",alignItems:"center",justifyContent:"center",textDecoration:"none",color:"#1C2B4B"}}
+                onMouseOver={e=>e.currentTarget.style.background=`${A}25`}
+                onMouseOut={e=>e.currentTarget.style.background=LT}>
+                <IcLink/>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── RECHERCHE ────────────────────────────────────────────────────────────────
+function Search({ atts, theme }) {
+  const A=theme.accent;
+  const [query,    setQuery]    = useState("");
+  const [selTypes, setSelTypes] = useState([]);
+  const [selSecs,  setSelSecs]  = useState([]);
+  const [minM,     setMinM]     = useState("");
+  const [minY,     setMinY]     = useState("");
+  const [selIds,   setSelIds]   = useState([]);
+  const [showRes,  setShowRes]  = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [sortAnn,  setSortAnn]  = useState("alpha");
+
+  const ALL_TYPES=useMemo(()=>[...new Set(atts.flatMap(a=>a.type))].sort(),[atts]);
+  const ALL_SECS =useMemo(()=>[...new Set(atts.map(a=>a.sec))].sort(),[atts]);
+
+  const filtered=useMemo(()=>atts.filter(a=>{
+    if(query){const q=query.toLowerCase();const t=(Array.isArray(a.type)?a.type:[]).join(" ");if(!a.ann.toLowerCase().includes(q)&&!a.lbl.toLowerCase().includes(q)&&!a.sec.toLowerCase().includes(q)&&!t.toLowerCase().includes(q))return false;}
+    if(selTypes.length&&!(Array.isArray(a.type)?a.type:[]).some(t=>selTypes.includes(t)))return false;
+    if(selSecs.length&&!selSecs.includes(a.sec))return false;
+    if(minM&&a.m<parseFloat(minM))return false;
+    if(minY&&a.yr<parseInt(minY))return false;
+    return true;
+  }),[atts,query,selTypes,selSecs,minM,minY]);
+
+  const groups   = useMemo(()=>{
+    const g = groupBy(filtered);
+    if (sortAnn==="alpha") g.sort((a,b)=>a.ann.localeCompare(b.ann,"fr"));
+    return g;
+  },[filtered,sortAnn]);
+  const toggle   = (id,v)=>setSelIds(p=>v?(p.includes(id)?p:[...p,id]):p.filter(x=>x!==id));
+  const togType  = t=>setSelTypes(p=>p.includes(t)?p.filter(x=>x!==t):[...p,t]);
+  const togSec   = s=>setSelSecs(p=>p.includes(s)?p.filter(x=>x!==s):[...p,s]);
+  const hasFilter= query||selTypes.length||selSecs.length||minM||minY;
+  const reset    = ()=>{setQuery("");setSelTypes([]);setSelSecs([]);setMinM("");setMinY("");};
+  const selAtts  = atts.filter(a=>selIds.includes(a.id));
+  const inp      = {width:"100%",background:BG,border:`1.5px solid ${BD}`,borderRadius:6,color:"#1C2B4B",fontFamily:"inherit",fontSize:13,padding:"9px 11px",outline:"none"};
+
+  const FilterContent = ()=>(
+    <div style={{padding:"16px",display:"flex",flexDirection:"column",gap:16}}>
+      <div>
+        <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Type de prestation</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+          {ALL_TYPES.map(t=>(
+            <button key={t} onClick={()=>togType(t)} style={{padding:"4px 10px",borderRadius:20,fontSize:11,fontWeight:500,cursor:"pointer",fontFamily:"inherit",border:`1.5px solid ${selTypes.includes(t)?A:BD}`,background:selTypes.includes(t)?`${A}20`:W,color:selTypes.includes(t)?theme.key==="D1"?"#1C2B4B":A:MU,transition:"all .12s"}}>{t}</button>
+          ))}
+        </div>
+      </div>
+      <div>
+        <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Secteur</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+          {ALL_SECS.map(s=>(
+            <button key={s} onClick={()=>togSec(s)} style={{padding:"4px 10px",borderRadius:20,fontSize:11,fontWeight:500,cursor:"pointer",fontFamily:"inherit",border:`1.5px solid ${selSecs.includes(s)?A:BD}`,background:selSecs.includes(s)?`${A}20`:W,color:selSecs.includes(s)?theme.key==="D1"?"#1C2B4B":A:MU,transition:"all .12s"}}>{s}</button>
+          ))}
+        </div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+        <div>
+          <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:6}}>Montant min (DH)</div>
+          <input type="number" placeholder="1 000 000" value={minM} onChange={e=>setMinM(e.target.value)} style={inp}/>
+        </div>
+        <div>
+          <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:6}}>Année min</div>
+          <input type="number" placeholder="2022" value={minY} onChange={e=>setMinY(e.target.value)} style={inp}/>
+        </div>
+      </div>
+      <div style={{borderTop:`1px solid ${BD}`,paddingTop:12,display:"flex",flexDirection:"column",gap:8}}>
+        <button onClick={()=>{setSelIds(filtered.map(a=>a.id));setShowFilters(false);}} style={{background:`${A}20`,border:`1.5px solid ${A}40`,borderRadius:6,color:theme.key==="D1"?"#1C2B4B":A,padding:"9px 12px",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>
+          ✓ Tout sélectionner ({filtered.length})
+        </button>
+        {selIds.length>0&&<button onClick={()=>setSelIds([])} style={{background:LT,border:`1.5px solid ${BD}`,borderRadius:6,color:MU,padding:"9px 12px",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"inherit",textAlign:"left"}}>✕ Désélectionner tout</button>}
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{animation:"fi .4s ease"}}>
+      {/* Barre de recherche + bouton filtres */}
+      <div style={{display:"flex",gap:10,marginBottom:14}}>
+        <div style={{position:"relative",flex:1}}>
+          <div style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",pointerEvents:"none"}}><IcSrch/></div>
+          <input type="text" placeholder="Rechercher annonceur, prestation…" value={query} onChange={e=>setQuery(e.target.value)}
+            style={{width:"100%",background:W,border:`1.5px solid ${query?A:BD}`,borderRadius:8,color:"#1C2B4B",fontFamily:"inherit",fontSize:13,padding:"11px 38px 11px 40px",outline:"none",transition:"all .15s"}}/>
+          {query&&<button onClick={()=>setQuery("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:MU,cursor:"pointer",fontSize:18,lineHeight:1}}>✕</button>}
+        </div>
+        <button onClick={()=>setShowFilters(true)} style={{
+          background:hasFilter?A:W,color:hasFilter?(theme.key==="D1"?"#1C2B4B":"#fff"):MU,
+          border:`1.5px solid ${hasFilter?A:BD}`,borderRadius:8,padding:"0 14px",
+          cursor:"pointer",display:"flex",alignItems:"center",gap:6,
+          fontSize:12,fontWeight:600,fontFamily:"inherit",flexShrink:0,
+        }}>
+          <IcFilter/> Filtres{hasFilter?` (actifs)`:""}
+        </button>
+      </div>
+
+      {/* Barre résultats + bouton Drive */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14,flexWrap:"wrap",gap:8}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+          <span style={{fontSize:13,fontWeight:700,color:"#1C2B4B"}}>{groups.length} annonceur{groups.length>1?"s":""}</span>
+          <span style={{fontSize:12,color:MU}}>· {filtered.length} attestation{filtered.length>1?"s":""}</span>
+          {hasFilter&&<span style={{background:`${A}20`,color:theme.key==="D1"?"#1C2B4B":A,fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:10}}>Filtré</span>}
+          <div style={{display:"flex",background:LT,borderRadius:6,padding:2,gap:1,marginLeft:4}}>
+            {[["alpha","A→Z"],["volume","Volume"]].map(([v,l])=>(
+              <button key={v} onClick={()=>setSortAnn(v)} style={{padding:"3px 9px",borderRadius:4,border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:11,fontWeight:600,background:sortAnn===v?W:"transparent",color:sortAnn===v?"#1C2B4B":MU,boxShadow:sortAnn===v?"0 1px 3px rgba(0,0,0,.1)":"none",transition:"all .15s"}}>{l}</button>
+            ))}
+          </div>
+        </div>
+        {selIds.length>0&&(
+          <button onClick={()=>setShowRes(true)} style={{background:A,color:theme.key==="D1"?"#1C2B4B":"#fff",border:"none",borderRadius:7,padding:"9px 16px",fontSize:12,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontFamily:"inherit",boxShadow:`0 3px 12px ${A}40`}}>
+            <IcLink/> {selIds.length} lien{selIds.length>1?"s":""} Drive
+          </button>
+        )}
+      </div>
+
+      {/* Desktop: sidebar + contenu / Mobile: juste contenu */}
+      <div className="search-layout">
+        {/* Sidebar desktop */}
+        <div className="sidebar-desktop" style={{background:W,border:`1px solid ${BD}`,borderRadius:10,overflow:"hidden",position:"sticky",top:72}}>
+          <div style={{background:"#1C2B4B",padding:"13px 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <span style={{fontSize:12,fontWeight:700,color:W}}>Critères AO</span>
+            {hasFilter&&<button onClick={reset} style={{background:"none",border:"none",color:"rgba(255,255,255,.65)",fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>Réinitialiser</button>}
+          </div>
+          <FilterContent/>
+        </div>
+
+        {/* Liste annonceurs */}
+        <div className="search-results">
+          {groups.length===0?(
+            <div style={{textAlign:"center",padding:50,color:MU,background:W,borderRadius:10,border:`1px solid ${BD}`}}>Aucune attestation ne correspond.</div>
+          ):(
+            <div style={{display:"flex",flexDirection:"column",gap:12}}>
+              {groups.map(g=>{
+                const allSel=g.items.every(a=>selIds.includes(a.id));
+                const someSel=g.items.some(a=>selIds.includes(a.id));
+                const tgAll=()=>allSel?g.items.forEach(a=>toggle(a.id,false)):g.items.forEach(a=>toggle(a.id,true));
+                return (
+                  <div key={g.ann} style={{background:W,border:`1.5px solid ${someSel?A:BD}`,borderRadius:10,overflow:"hidden",boxShadow:someSel?`0 0 0 3px ${A}18`:"0 1px 4px rgba(0,0,0,.04)",transition:"all .15s"}}>
+                    <div style={{background:someSel?`${A}10`:LT,borderBottom:`1px solid ${someSel?A+"28":BD}`,padding:"11px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,minWidth:0,overflow:"hidden"}}>
+                      <div style={{minWidth:0}}>
+                        <div style={{fontSize:13,fontWeight:700,color:"#1C2B4B",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{g.ann}</div>
+                        <div style={{fontSize:10,color:MU,marginTop:1}}>{g.sec} · {g.items.length} att.</div>
+                      </div>
+                      <button onClick={tgAll} style={{background:allSel?A:W,color:allSel?(theme.key==="D1"?"#1C2B4B":"#fff"):MU,border:`1.5px solid ${allSel?A:BD}`,borderRadius:5,padding:"4px 10px",fontSize:10,fontWeight:700,cursor:"pointer",fontFamily:"inherit",transition:"all .12s",flexShrink:0}}>
+                        {allSel?"✓ Désel.":"Sél. tout"}
+                      </button>
+                    </div>
+                    {g.items.map((a,i)=>{
+                      const sel=selIds.includes(a.id);
+                      return (
+                        <div key={a.id} onClick={()=>toggle(a.id,!sel)} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 12px",cursor:"pointer",background:sel?`${A}06`:W,borderBottom:i<g.items.length-1?`1px solid ${BD}`:"none",transition:"background .12s",minWidth:0,overflow:"hidden"}}>
+                          <div style={{width:18,height:18,borderRadius:4,flexShrink:0,border:`2px solid ${sel?A:BD}`,background:sel?A:W,display:"flex",alignItems:"center",justifyContent:"center",transition:"all .12s"}}>
+                            {sel&&<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={theme.key==="D1"?"#1C2B4B":"white"} strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>}
+                          </div>
+                          <div style={{flex:1,minWidth:0,overflow:"hidden"}}>
+                            <div style={{fontSize:12,fontWeight:500,color:"#1C2B4B",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{a.lbl}</div>
+                            <div style={{display:"flex",gap:4,marginTop:3,flexWrap:"wrap"}}>{(Array.isArray(a.type)?a.type:[]).slice(0,2).map(t=><span key={t} style={{fontSize:9,background:LT,color:"#1C2B4B",borderRadius:3,padding:"1px 5px",fontWeight:500}}>{t}</span>)}</div>
+                          </div>
+                          <div style={{textAlign:"right",flexShrink:0}}>
+                            <div style={{fontSize:11,fontWeight:700,color:A,whiteSpace:"nowrap"}}>{fmt(a.m,a.dv)}</div>
+                            <div style={{fontSize:9,color:MU}}>{a.yr}</div>
+                          </div>
+                          <a href={driveUrl(a.fid)} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()}
+                            style={{flexShrink:0,width:28,height:28,borderRadius:6,background:"#1C2B4B",color:W,display:"flex",alignItems:"center",justifyContent:"center",textDecoration:"none"}}
+                            onMouseOver={e=>e.currentTarget.style.opacity=".7"}
+                            onMouseOut={e=>e.currentTarget.style.opacity="1"}>
+                            <IcLink/>
+                          </a>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* DRAWER FILTRES MOBILE — slide from bottom */}
+      {showFilters&&(
+        <div style={{position:"fixed",inset:0,zIndex:400,display:"flex",flexDirection:"column"}}>
+          <div style={{flex:1,background:"rgba(28,43,75,.55)"}} onClick={()=>setShowFilters(false)}/>
+          <div style={{background:W,borderRadius:"20px 20px 0 0",maxHeight:"80vh",display:"flex",flexDirection:"column",boxShadow:"0 -8px 40px rgba(0,0,0,.18)"}}>
+            {/* handle + header */}
+            <div style={{display:"flex",justifyContent:"center",paddingTop:10,paddingBottom:4}}>
+              <div style={{width:36,height:4,background:BD,borderRadius:2}}/>
+            </div>
+            <div style={{background:"#1C2B4B",margin:"0 0 0 0",padding:"13px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <span style={{fontSize:13,fontWeight:700,color:W}}>Critères AO</span>
+              <div style={{display:"flex",gap:12,alignItems:"center"}}>
+                {hasFilter&&<button onClick={()=>{reset();}} style={{background:"none",border:"none",color:"rgba(255,255,255,.7)",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Réinitialiser</button>}
+                <button onClick={()=>setShowFilters(false)} style={{background:"rgba(255,255,255,.15)",border:"none",borderRadius:6,color:W,width:28,height:28,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><IcClose/></button>
+              </div>
+            </div>
+            <div style={{overflowY:"auto",flex:1}}>
+              <FilterContent/>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODALE RÉSULTAT — slide from bottom */}
+      {showRes&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(28,43,75,.6)",display:"flex",alignItems:"flex-end",justifyContent:"center",zIndex:300}} onClick={()=>setShowRes(false)}>
+          <div onClick={e=>e.stopPropagation()} style={{background:W,borderRadius:"18px 18px 0 0",width:"100%",maxWidth:660,maxHeight:"88vh",display:"flex",flexDirection:"column",boxShadow:"0 -8px 40px rgba(0,0,0,.2)"}}>
+            <div style={{display:"flex",justifyContent:"center",paddingTop:10,paddingBottom:4}}><div style={{width:36,height:4,background:"rgba(255,255,255,.4)",borderRadius:2}}/></div>
+            <div style={{background:A,padding:"14px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
+              <div>
+                <div style={{fontSize:14,fontWeight:700,color:theme.key==="D1"?"#1C2B4B":W}}>{selAtts.length} attestation{selAtts.length>1?"s":""} sélectionnée{selAtts.length>1?"s":""}</div>
+                <div style={{fontSize:11,color:theme.key==="D1"?"rgba(28,43,75,.7)":"rgba(255,255,255,.75)",marginTop:1}}>Liens Drive directs</div>
+              </div>
+              <button onClick={()=>setShowRes(false)} style={{background:"rgba(0,0,0,.15)",border:"none",borderRadius:6,color:theme.key==="D1"?"#1C2B4B":W,width:30,height:30,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><IcClose/></button>
+            </div>
+            <div style={{overflowY:"auto",padding:"18px 20px",flex:1}}>
+              {groupBy(selAtts).map((g,gi,arr)=>(
+                <div key={g.ann} style={{marginBottom:gi<arr.length-1?22:0}}>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                    <div style={{width:4,height:18,background:A,borderRadius:2}}/>
+                    <div style={{fontSize:13,fontWeight:700,color:"#1C2B4B"}}>{g.ann}</div>
+                    <span style={{background:`${A}20`,color:theme.key==="D1"?"#1C2B4B":A,fontSize:10,fontWeight:700,padding:"2px 7px",borderRadius:10}}>{g.items.length}</span>
+                  </div>
+                  <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                    {g.items.map((a,i)=>(
+                      <div key={a.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background:BG,borderRadius:8,border:`1px solid ${BD}`}}>
+                        <div style={{width:22,height:22,borderRadius:"50%",background:i===0?A:"#1C2B4B",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,color:i===0&&theme.key==="D1"?"#1C2B4B":W,fontWeight:700,flexShrink:0}}>{i+1}</div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontSize:12,fontWeight:500,color:"#1C2B4B",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{a.lbl}</div>
+                          <div style={{fontSize:10,color:MU,marginTop:1}}>{a.yr} · {fmtFull(a.m,a.dv)}</div>
+                        </div>
+                        <a href={driveUrl(a.fid)} target="_blank" rel="noopener noreferrer"
+                          style={{display:"inline-flex",alignItems:"center",gap:5,background:"#1C2B4B",color:W,borderRadius:6,padding:"7px 13px",fontSize:11,fontWeight:600,textDecoration:"none",flexShrink:0}}>
+                          <IcLink/> Ouvrir
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={{borderTop:`1px solid ${BD}`,padding:"12px 20px",display:"flex",justifyContent:"flex-end",flexShrink:0}}>
+              <button onClick={()=>setShowRes(false)} style={{background:LT,border:`1px solid ${BD}`,borderRadius:6,padding:"9px 20px",fontSize:12,fontWeight:600,color:"#1C2B4B",cursor:"pointer",fontFamily:"inherit"}}>Fermer</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── PROFILS ──────────────────────────────────────────────────────────────────
+
+const AGENCY_COLORS = {
+  "PR Media":   "#E8392A",
+  "D1":         "#F7BE00",
+  "DPR Event":  "#6B7FA3",
+};
+
+const MAX_EXP = 35;
+const NIVEAUX = ["Bac+2","Bac+3","Bac+5","Bac+8"];
+
+function detectNiveau(diplomes) {
+  const t = (diplomes || []).join(" ").toLowerCase();
+  if (/doctorat|ph\.?d|thèse/.test(t)) return "Bac+8";
+  if (/master|mastère|mba|ingénieur|dess|dea|grande école/.test(t)) return "Bac+5";
+  if (/licence|bachelor|l3/.test(t)) return "Bac+3";
+  if (/bts|dut|deug/.test(t)) return "Bac+2";
+  return null;
+}
+
+async function downloadZip(profiles) {
+  const zip = new JSZip();
+  await Promise.all(profiles.map(async p => {
+    const url = `/cvs/${encodeURIComponent(p.agency)}/${encodeURIComponent(p.file)}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to fetch ${p.file}`);
+    zip.file(p.file, await res.blob());
+  }));
+  const blob = await zip.generateAsync({ type: "blob" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `profils-ao-${new Date().toISOString().slice(0,10)}.zip`;
+  a.click();
+}
+
+function ProfileCard({ profile, sel, onToggle, accent }) {
+  const ac = AGENCY_COLORS[profile.agency] || MU;
+  return (
+    <div onClick={onToggle} style={{
+      background: W, border: `1.5px solid ${sel ? accent : BD}`,
+      borderRadius: 10, padding: "14px", cursor: "pointer",
+      boxShadow: sel ? `0 0 0 3px ${accent}18` : "0 1px 4px rgba(0,0,0,.04)",
+      transition: "all .15s", display: "flex", flexDirection: "column", gap: 10,
+    }}>
+      {/* header row */}
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+        <div style={{
+          width: 18, height: 18, borderRadius: 4, flexShrink: 0, marginTop: 2,
+          border: `2px solid ${sel ? accent : BD}`, background: sel ? accent : W,
+          display: "flex", alignItems: "center", justifyContent: "center", transition: "all .12s",
+        }}>
+          {sel && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>}
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#1C2B4B", marginBottom: 3 }}>{profile.name}</div>
+          <div style={{ fontSize: 11, color: MU, lineHeight: 1.4 }}>{profile.job_title}</div>
+        </div>
+      </div>
+      {/* meta row */}
+      <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+        <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 10, background: `${ac}18`, color: ac, border: `1px solid ${ac}40` }}>{profile.agency}</span>
+        <span style={{ fontSize: 10, color: MU, fontWeight: 600 }}>{profile.years_of_experience} ans exp.</span>
+      </div>
+      {/* diplomes */}
+      {profile.diplomes?.length > 0 && (
+        <div style={{ borderTop: `1px solid ${BD}`, paddingTop: 8, display: "flex", flexDirection: "column", gap: 4 }}>
+          {profile.diplomes.slice(0, 2).map((d, i) => (
+            <div key={i} style={{ fontSize: 10, color: MU, lineHeight: 1.4 }}>{d}</div>
+          ))}
+          {profile.diplomes.length > 2 && (
+            <div style={{ fontSize: 10, color: MU, fontStyle: "italic" }}>+{profile.diplomes.length - 2} autre{profile.diplomes.length - 2 > 1 ? "s" : ""}</div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Profiles({ theme }) {
+  const A = theme.accent;
+  const [query, setQuery]             = useState("");
+  const [selAgency, setSelAgency]     = useState("Tous");
+  const [expMin, setExpMin]           = useState(0);
+  const [expMax, setExpMax]           = useState(MAX_EXP);
+  const [selNiveaux, setSelNiveaux]   = useState([]);
+  const [sortProfiles, setSortProfiles] = useState("name");
+  const [selIds, setSelIds]           = useState([]);
+  const [downloading, setDl]          = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+
+  const agencies = useMemo(() => ["Tous", ...Object.keys(AGENCY_COLORS)], []);
+
+  const filtered = useMemo(() => {
+    let list = profilesData.filter(p => {
+      if (selAgency !== "Tous" && p.agency !== selAgency) return false;
+      if (expMin > 0 || expMax < MAX_EXP) {
+        const e = p.years_of_experience;
+        if (e === null || e < expMin || e > expMax) return false;
+      }
+      if (selNiveaux.length && !selNiveaux.includes(detectNiveau(p.diplomes))) return false;
+      if (query) {
+        const q = query.toLowerCase();
+        const dipl = (p.diplomes || []).join(" ").toLowerCase();
+        if (!p.name.toLowerCase().includes(q) && !p.job_title.toLowerCase().includes(q) && !dipl.includes(q)) return false;
+      }
+      return true;
+    });
+    if (sortProfiles === "name") list = [...list].sort((a,b) => a.name.localeCompare(b.name,"fr"));
+    else if (sortProfiles === "exp") list = [...list].sort((a,b) => (b.years_of_experience||0)-(a.years_of_experience||0));
+    else if (sortProfiles === "agency") list = [...list].sort((a,b) => a.agency.localeCompare(b.agency,"fr"));
+    return list;
+  }, [query, selAgency, expMin, expMax, selNiveaux, sortProfiles]);
+
+  const toggle   = id => setSelIds(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id]);
+  const allSel   = filtered.length > 0 && filtered.every(p => selIds.includes(p.file));
+  const toggleAll = () => allSel ? setSelIds([]) : setSelIds(filtered.map(p => p.file));
+  const hasFilter = query || selAgency !== "Tous" || expMin > 0 || expMax < MAX_EXP || selNiveaux.length;
+  const reset    = () => { setQuery(""); setSelAgency("Tous"); setExpMin(0); setExpMax(MAX_EXP); setSelNiveaux([]); };
+
+
+  const bac5Count = useMemo(() => profilesData.filter(p=>detectNiveau(p.diplomes)==="Bac+5").length, []);
+  const togNiveau = n => setSelNiveaux(p => p.includes(n) ? p.filter(x=>x!==n) : [...p,n]);
+
+  const selProfiles = profilesData.filter(p => selIds.includes(p.file));
+
+  const handleDownload = async () => {
+    setDl(true);
+    try { await downloadZip(selProfiles); }
+    catch (e) { console.error(e); alert("Erreur lors du téléchargement : " + e.message); }
+    finally { setDl(false); }
+  };
+
+  const inp = { width: "100%", background: BG, border: `1.5px solid ${BD}`, borderRadius: 6, color: "#1C2B4B", fontFamily: "inherit", fontSize: 13, padding: "9px 11px", outline: "none" };
+
+  const FilterContent = () => (
+    <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: 16 }}>
+      {/* Agence */}
+      <div>
+        <div style={{ fontSize: 10, color: MU, textTransform: "uppercase", letterSpacing: ".1em", fontWeight: 700, marginBottom: 8 }}>Agence</div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+          {agencies.map(ag => (
+            <button key={ag} onClick={() => setSelAgency(ag)} style={{
+              padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 500, cursor: "pointer", fontFamily: "inherit",
+              border: `1.5px solid ${selAgency === ag ? A : BD}`,
+              background: selAgency === ag ? `${A}20` : W,
+              color: selAgency === ag ? (theme.key === "D1" ? "#1C2B4B" : A) : MU,
+              transition: "all .12s",
+            }}>{ag}</button>
+          ))}
+        </div>
+      </div>
+      {/* Niveau formation */}
+      <div>
+        <div style={{ fontSize: 10, color: MU, textTransform: "uppercase", letterSpacing: ".1em", fontWeight: 700, marginBottom: 8 }}>Niveau de formation</div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+          {NIVEAUX.map(n => (
+            <button key={n} onClick={() => togNiveau(n)} style={{
+              padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
+              border: `1.5px solid ${selNiveaux.includes(n) ? A : BD}`,
+              background: selNiveaux.includes(n) ? `${A}20` : W,
+              color: selNiveaux.includes(n) ? (theme.key === "D1" ? "#1C2B4B" : A) : MU,
+              transition: "all .12s",
+            }}>{n}</button>
+          ))}
+        </div>
+      </div>
+      {/* Expérience min/max */}
+      <div>
+        <div style={{ fontSize:10, color:MU, textTransform:"uppercase", letterSpacing:".1em", fontWeight:700, marginBottom:8 }}>Expérience (ans)</div>
+        <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+          <input type="number" min={0} max={MAX_EXP} placeholder="Min" value={expMin === 0 ? "" : expMin}
+            onChange={e => setExpMin(e.target.value === "" ? 0 : Math.min(+e.target.value, expMax-1))}
+            style={{ ...inp, width:"50%" }}/>
+          <span style={{ fontSize:11, color:MU }}>—</span>
+          <input type="number" min={0} max={MAX_EXP} placeholder="Max" value={expMax === MAX_EXP ? "" : expMax}
+            onChange={e => setExpMax(e.target.value === "" ? MAX_EXP : Math.max(+e.target.value, expMin+1))}
+            style={{ ...inp, width:"50%" }}/>
+        </div>
+      </div>
+      {/* Actions */}
+      <div style={{ borderTop: `1px solid ${BD}`, paddingTop: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+        <button onClick={() => { toggleAll(); setShowFilters(false); }} style={{ background: `${A}20`, border: `1.5px solid ${A}40`, borderRadius: 6, color: theme.key === "D1" ? "#1C2B4B" : A, padding: "9px 12px", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>
+          {allSel ? `✕ Désélectionner (${filtered.length})` : `✓ Tout sélectionner (${filtered.length})`}
+        </button>
+        {hasFilter && <button onClick={reset} style={{ background: LT, border: `1.5px solid ${BD}`, borderRadius: 6, color: MU, padding: "9px 12px", fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>Réinitialiser les filtres</button>}
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ animation: "fi .4s ease" }}>
+      {/* KPI strip */}
+      <div className="kpi-grid" style={{ marginBottom: 18 }}>
+        <div style={{ background: W, border: `1px solid ${BD}`, borderRadius: 10, padding: "16px", borderLeft: `4px solid ${A}` }}>
+          <div style={{ fontSize: 9, color: MU, textTransform: "uppercase", letterSpacing: ".1em", fontWeight: 700, marginBottom: 8 }}>Total profils</div>
+          <div style={{ fontSize: 22, fontWeight: 800, color: "#1C2B4B", fontFamily: "Georgia,serif", lineHeight: 1 }}>{profilesData.length}</div>
+          <div style={{ fontSize: 10, color: MU, marginTop: 4 }}>CVs disponibles</div>
+        </div>
+        <div style={{ background: W, border: `1px solid ${BD}`, borderRadius: 10, padding: "16px", borderLeft: `4px solid #22C55E` }}>
+          <div style={{ fontSize: 9, color: MU, textTransform: "uppercase", letterSpacing: ".1em", fontWeight: 700, marginBottom: 8 }}>Bac+5</div>
+          <div style={{ fontSize: 22, fontWeight: 800, color: "#1C2B4B", fontFamily: "Georgia,serif", lineHeight: 1 }}>{bac5Count}</div>
+          <div style={{ fontSize: 10, color: MU, marginTop: 4 }}>profils Master+</div>
+        </div>
+      </div>
+      {/* search + filter bar */}
+      <div style={{ display: "flex", gap: 10, marginBottom: 14 }}>
+        <div style={{ position: "relative", flex: 1 }}>
+          <div style={{ position: "absolute", left: 13, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}><IcSrch /></div>
+          <input type="text" placeholder="Nom, poste, diplôme…" value={query} onChange={e => setQuery(e.target.value)}
+            style={{ width: "100%", background: W, border: `1.5px solid ${query ? A : BD}`, borderRadius: 8, color: "#1C2B4B", fontFamily: "inherit", fontSize: 13, padding: "11px 38px 11px 40px", outline: "none", transition: "all .15s" }} />
+          {query && <button onClick={() => setQuery("")} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: MU, cursor: "pointer", fontSize: 18, lineHeight: 1 }}>✕</button>}
+        </div>
+        <button onClick={() => setShowFilters(true)} style={{
+          background: hasFilter ? A : W, color: hasFilter ? (theme.key === "D1" ? "#1C2B4B" : "#fff") : MU,
+          border: `1.5px solid ${hasFilter ? A : BD}`, borderRadius: 8, padding: "0 14px",
+          cursor: "pointer", display: "flex", alignItems: "center", gap: 6,
+          fontSize: 12, fontWeight: 600, fontFamily: "inherit", flexShrink: 0,
+        }}>
+          <IcFilter /> Filtres{hasFilter ? " (actifs)" : ""}
+        </button>
+      </div>
+
+      {/* results bar */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#1C2B4B" }}>{filtered.length} profil{filtered.length > 1 ? "s" : ""}</span>
+          {hasFilter && <span style={{ background: `${A}20`, color: theme.key === "D1" ? "#1C2B4B" : A, fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 10 }}>Filtré</span>}
+          <div style={{ display:"flex", background:LT, borderRadius:6, padding:2, gap:1, marginLeft:4 }}>
+            {[["name","A→Z"],["exp","Exp ↓"],["agency","Agence"]].map(([v,l])=>(
+              <button key={v} onClick={()=>setSortProfiles(v)} style={{ padding:"3px 9px", borderRadius:4, border:"none", cursor:"pointer", fontFamily:"inherit", fontSize:11, fontWeight:600, background:sortProfiles===v?W:"transparent", color:sortProfiles===v?"#1C2B4B":MU, boxShadow:sortProfiles===v?"0 1px 3px rgba(0,0,0,.1)":"none", transition:"all .15s" }}>{l}</button>
+            ))}
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <button onClick={toggleAll} style={{ background: W, color: MU, border: `1.5px solid ${BD}`, borderRadius: 6, padding: "7px 12px", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>
+            {allSel ? "Désélectionner tout" : "Sélectionner tout"}
+          </button>
+          {selIds.length > 0 && (
+            <button onClick={handleDownload} disabled={downloading} style={{
+              background: A, color: theme.key === "D1" ? "#1C2B4B" : "#fff", border: "none",
+              borderRadius: 7, padding: "9px 16px", fontSize: 12, fontWeight: 700, cursor: "pointer",
+              display: "flex", alignItems: "center", gap: 6, fontFamily: "inherit",
+              boxShadow: `0 3px 12px ${A}40`, opacity: downloading ? .6 : 1,
+            }}>
+              <IcDl /> {downloading ? "Préparation…" : `${selIds.length} CV${selIds.length > 1 ? "s" : ""}`}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* desktop layout */}
+      <div className="search-layout">
+        {/* sidebar */}
+        <div className="sidebar-desktop" style={{ background: W, border: `1px solid ${BD}`, borderRadius: 10, overflow: "hidden", position: "sticky", top: 72 }}>
+          <div style={{ background: "#1C2B4B", padding: "13px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: W }}>Filtres</span>
+            {hasFilter && <button onClick={reset} style={{ background: "none", border: "none", color: "rgba(255,255,255,.65)", fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>Réinitialiser</button>}
+          </div>
+          <FilterContent />
+        </div>
+
+        {/* grid */}
+        <div className="search-results">
+          {filtered.length === 0
+            ? <div style={{ textAlign: "center", padding: 50, color: MU, background: W, borderRadius: 10, border: `1px solid ${BD}` }}>Aucun profil ne correspond.</div>
+            : <div className="profiles-grid">
+                {filtered.map(p => (
+                  <ProfileCard key={p.file} profile={p} sel={selIds.includes(p.file)} onToggle={() => toggle(p.file)} accent={A} />
+                ))}
+              </div>
+          }
+        </div>
+      </div>
+
+      {/* mobile filter drawer */}
+      {showFilters && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 400, display: "flex", flexDirection: "column" }}>
+          <div style={{ flex: 1, background: "rgba(28,43,75,.55)" }} onClick={() => setShowFilters(false)} />
+          <div style={{ background: W, borderRadius: "20px 20px 0 0", maxHeight: "80vh", display: "flex", flexDirection: "column", boxShadow: "0 -8px 40px rgba(0,0,0,.18)" }}>
+            <div style={{ display: "flex", justifyContent: "center", paddingTop: 10, paddingBottom: 4 }}>
+              <div style={{ width: 36, height: 4, background: BD, borderRadius: 2 }} />
+            </div>
+            <div style={{ background: "#1C2B4B", padding: "13px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: W }}>Filtres</span>
+              <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                {hasFilter && <button onClick={reset} style={{ background: "none", border: "none", color: "rgba(255,255,255,.7)", fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>Réinitialiser</button>}
+                <button onClick={() => setShowFilters(false)} style={{ background: "rgba(255,255,255,.15)", border: "none", borderRadius: 6, color: W, width: 28, height: 28, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><IcClose /></button>
+              </div>
+            </div>
+            <div style={{ overflowY: "auto", flex: 1 }}>
+              <FilterContent />
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── APPELS D'OFFRES ─────────────────────────────────────────────────────────
+function InfoRow({ label, value }) {
+  if (!value || value === "null" || (typeof value === "string" && value.trim() === "")) return null;
+  return (
+    <div style={{display:"flex",gap:10,fontSize:12,lineHeight:1.5}}>
+      <span style={{color:MU,fontWeight:600,flexShrink:0,minWidth:130}}>{label}</span>
+      <span style={{color:"#1C2B4B"}}>{value}</span>
+    </div>
+  );
+}
+
+function AOCard({ ao }) {
+  const deadline = parseDeadline(ao.date_end);
+  const days     = daysUntil(deadline);
+  const est      = parseEstimation(ao.estimation);
+  const caut     = parseCaution(ao.caution_provisoire);
+  const title    = cleanIntitule(ao.intitule);
+  const mc       = AO_MODE_COLOR[ao.mode] || MU;
+  const expired  = days !== null && days < 0;
+
+  const dlColor = days === null ? MU : days < 0 ? "#9CA3AF" : days === 0 ? "#DC2626" : days <= 3 ? "#DC2626" : days <= 7 ? "#F59E0B" : "#16A34A";
+  const dlLabel = days === null ? null : days < 0 ? "Expiré" : days === 0 ? "Aujourd'hui !" : `dans ${days}j`;
+
+  const dateDisplay = ao.date_end ? ao.date_end.replace(" ...","").trim() : "";
+  const modePass    = cleanMode(ao.mode_passation);
+
+  return (
+    <div style={{
+      background: expired ? "#FAFAFA" : W,
+      border:`1px solid ${!expired && days !== null && days <= 3 ? "#FCA5A5" : BD}`,
+      borderLeft:`4px solid ${expired ? "#D1D5DB" : mc}`,
+      borderRadius:10, padding:"20px 22px", display:"flex", flexDirection:"column", gap:14,
+      opacity: expired ? .72 : 1,
+    }}>
+
+      {/* ── Header ── */}
+      <div style={{display:"flex",alignItems:"flex-start",gap:8,flexWrap:"wrap"}}>
+        <span style={{fontSize:10,fontWeight:700,padding:"3px 9px",borderRadius:4,flexShrink:0,background:`${mc}18`,color:mc,border:`1px solid ${mc}40`}}>{ao.mode}</span>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:14,fontWeight:800,color:"#1C2B4B",lineHeight:1.3}}>{ao.acheteur}</div>
+          <div style={{fontSize:11,color:MU,marginTop:3}}>
+            Réf. <strong>{ao.reference}</strong>
+            {ao.type_procedure && <> · {ao.type_procedure}</>}
+            {modePass && <> · {modePass}</>}
+          </div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:5,flexShrink:0}}>
+          {dlLabel && (
+            <span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:`${dlColor}15`,color:dlColor,border:`1px solid ${dlColor}40`}}>{dlLabel}</span>
+          )}
+          {ao.reserve_pme === "Oui" && (
+            <span style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:10,color:"#16A34A",background:"#DCFCE7",border:"1px solid #BBF7D0"}}>PME réservé</span>
+          )}
+        </div>
+      </div>
+
+      {/* ── Intitulé ── */}
+      <div style={{fontSize:13,color:"#1C2B4B",lineHeight:1.6,borderLeft:`2px solid ${mc}30`,paddingLeft:12}}>{title}</div>
+
+      {/* ── Lieu ── */}
+      {ao.lieu && <div style={{fontSize:12,color:MU}}>📍 {ao.lieu}</div>}
+
+      {/* ── Financials ── */}
+      <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+        {est !== null && (
+          <div style={{flex:"1 1 140px",background:BG,borderRadius:8,padding:"10px 14px",border:`1px solid ${BD}`}}>
+            <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:4}}>Estimation</div>
+            <div style={{fontSize:16,fontWeight:800,color:"#16A34A",fontFamily:"Georgia,serif"}}>{fmtMAD(est)}</div>
+            <div style={{fontSize:10,color:MU,marginTop:2}}>{new Intl.NumberFormat("fr-MA").format(Math.round(est))} DH</div>
+          </div>
+        )}
+        {caut !== null && (
+          <div style={{flex:"1 1 140px",background:BG,borderRadius:8,padding:"10px 14px",border:`1px solid ${BD}`}}>
+            <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:4}}>Caution provisoire</div>
+            <div style={{fontSize:16,fontWeight:800,color:"#F59E0B",fontFamily:"Georgia,serif"}}>{fmtMAD(caut)}</div>
+            <div style={{fontSize:10,color:MU,marginTop:2}}>{new Intl.NumberFormat("fr-MA").format(Math.round(caut))} DH</div>
+          </div>
+        )}
+        {ao.prix_dossier && ao.prix_dossier !== "0,00 MAD" && (
+          <div style={{flex:"1 1 120px",background:BG,borderRadius:8,padding:"10px 14px",border:`1px solid ${BD}`}}>
+            <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:4}}>Prix dossier</div>
+            <div style={{fontSize:16,fontWeight:800,color:"#1C2B4B",fontFamily:"Georgia,serif"}}>{ao.prix_dossier}</div>
+          </div>
+        )}
+        <div style={{flex:"1 1 120px",background:BG,borderRadius:8,padding:"10px 14px",border:`1px solid ${!expired && days !== null && days <= 3 ? "#FCA5A5" : BD}`}}>
+          <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:4}}>Date limite</div>
+          <div style={{fontSize:13,fontWeight:700,color:dlColor,lineHeight:1.3}}>{dateDisplay}</div>
+        </div>
+      </div>
+
+      {/* ── Logistique ── */}
+      <div style={{display:"flex",flexDirection:"column",gap:6,borderTop:`1px solid ${BD}`,paddingTop:12}}>
+        <InfoRow label="Retrait / dépôt"   value={ao.adresse_retrait !== ao.adresse_depot ? ao.adresse_retrait : ao.adresse_retrait}/>
+        <InfoRow label="Lieu d'ouverture"  value={ao.lieu_ouverture}/>
+        {ao.variante && ao.variante !== "null" && <InfoRow label="Variante" value={ao.variante}/>}
+      </div>
+
+      {/* ── Contact ── */}
+      {(ao.contact || ao.email || ao.telephone) && (
+        <div style={{display:"flex",gap:16,flexWrap:"wrap",background:`${AO_ACCENT}08`,border:`1px solid ${AO_ACCENT}20`,borderRadius:8,padding:"10px 14px"}}>
+          {ao.contact  && <span style={{fontSize:12,color:"#1C2B4B",fontWeight:600}}>👤 {ao.contact}</span>}
+          {ao.email    && <a href={`mailto:${ao.email}`}    style={{fontSize:12,color:AO_ACCENT,textDecoration:"none"}}>✉ {ao.email}</a>}
+          {ao.telephone&& <a href={`tel:${ao.telephone}`}   style={{fontSize:12,color:AO_ACCENT,textDecoration:"none"}}>📞 {ao.telephone}</a>}
+          {ao.fax      && <span style={{fontSize:12,color:MU}}>🖷 {ao.fax}</span>}
+        </div>
+      )}
+
+      {/* ── Actions ── */}
+      <div style={{display:"flex",gap:8,paddingTop:2}}>
+        <a href={ao.url} target="_blank" rel="noopener noreferrer" style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:6,background:"#1C2B4B",color:W,borderRadius:7,padding:"10px 14px",fontSize:12,fontWeight:700,textDecoration:"none"}}>
+          <IcLink/> Consulter la fiche
+        </a>
+        {ao.dce_url && (
+          <a href={ao.dce_url} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",gap:6,background:BG,border:`1px solid ${BD}`,color:"#1C2B4B",borderRadius:7,padding:"10px 16px",fontSize:12,fontWeight:600,textDecoration:"none"}}>
+            <IcDl/> Télécharger DCE
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function AOsPage() {
+  const A = AO_ACCENT;
+  const [query,      setQuery]      = useState("");
+  const [selModes,   setSelModes]   = useState([]);
+  const [sortBy,     setSortBy]     = useState("deadline");
+  const [pmeOnly,    setPmeOnly]    = useState(false);
+  const [hideExpired,setHideExpired]= useState(false);
+  const [minEst,     setMinEst]     = useState("");
+  const [maxEst,     setMaxEst]     = useState("");
+  const [minCaut,    setMinCaut]    = useState("");
+  const [maxCaut,    setMaxCaut]    = useState("");
+  const [scrapedDate,setScrapedDate]= useState(()=>new Date().toISOString().slice(0,10));
+
+  const ALL_MODES   = useMemo(()=>[...new Set(AOS.map(a=>a.mode).filter(Boolean))].sort(),[]);
+  const modeCounts  = useMemo(()=>{ const c={}; AOS.forEach(a=>{c[a.mode]=(c[a.mode]||0)+1;}); return c; },[]);
+  const urgentCount = useMemo(()=>AOS.filter(a=>{ const d=daysUntil(parseDeadline(a.date_end)); return d!==null&&d>=0&&d<=7; }).length,[]);
+  const todayStr    = new Date().toISOString().slice(0,10);
+  const todayCount  = useMemo(()=>AOS.filter(a=>a.scraped_at&&a.scraped_at.slice(0,10)===todayStr).length,[todayStr]);
+
+  const filtered = useMemo(()=>{
+    let list = AOS;
+    if (query) {
+      const q = query.toLowerCase();
+      list = list.filter(a=>
+        a.acheteur?.toLowerCase().includes(q) ||
+        cleanIntitule(a.intitule).toLowerCase().includes(q) ||
+        a.reference?.toLowerCase().includes(q)
+      );
+    }
+    if (selModes.length) list = list.filter(a=>selModes.includes(a.mode));
+    if (pmeOnly) list = list.filter(a=>a.reserve_pme==="Oui");
+    if (hideExpired) list = list.filter(a=>{ const d=daysUntil(parseDeadline(a.date_end)); return d===null||d>=0; });
+    if (minEst) list = list.filter(a=>{ const e=parseEstimation(a.estimation); return e!==null&&e>=parseFloat(minEst); });
+    if (maxEst) list = list.filter(a=>{ const e=parseEstimation(a.estimation); return e!==null&&e<=parseFloat(maxEst); });
+    if (minCaut) list = list.filter(a=>{ const c=parseCaution(a.caution_provisoire); return c!==null&&c>=parseFloat(minCaut); });
+    if (maxCaut) list = list.filter(a=>{ const c=parseCaution(a.caution_provisoire); return c!==null&&c<=parseFloat(maxCaut); });
+    if (scrapedDate) list = list.filter(a=>a.scraped_at&&a.scraped_at.slice(0,10)===scrapedDate);
+    return list;
+  },[query,selModes,pmeOnly,hideExpired,minEst,maxEst,minCaut,maxCaut,scrapedDate]);
+
+  const sorted = useMemo(()=>{
+    const list = [...filtered];
+    const now  = new Date();
+    if (sortBy==="deadline") {
+      list.sort((a,b)=>{
+        const da=parseDeadline(a.date_end), db=parseDeadline(b.date_end);
+        if (!da&&!db) return 0; if (!da) return 1; if (!db) return -1;
+        const ae=da<now, be=db<now;
+        if (ae&&!be) return 1; if (!ae&&be) return -1;
+        return da-db;
+      });
+    } else if (sortBy==="estimation") {
+      list.sort((a,b)=>(parseEstimation(b.estimation)||0)-(parseEstimation(a.estimation)||0));
+    } else if (sortBy==="caution") {
+      list.sort((a,b)=>(parseCaution(b.caution_provisoire)||0)-(parseCaution(a.caution_provisoire)||0));
+    } else {
+      list.sort((a,b)=>(a.acheteur||"").localeCompare(b.acheteur||"","fr"));
+    }
+    return list;
+  },[filtered,sortBy]);
+
+  const togMode   = m=>setSelModes(p=>p.includes(m)?p.filter(x=>x!==m):[...p,m]);
+  const hasFilter = query||selModes.length||pmeOnly||hideExpired||minEst||maxEst||minCaut||maxCaut||scrapedDate;
+  const reset     = ()=>{ setQuery(""); setSelModes([]); setPmeOnly(false); setHideExpired(false); setMinEst(""); setMaxEst(""); setMinCaut(""); setMaxCaut(""); setScrapedDate(""); };
+
+  const numInput = (value, setter, placeholder) => (
+    <input value={value} onChange={e=>setter(e.target.value)} type="number" placeholder={placeholder}
+      style={{width:110,background:BG,border:`1px solid ${BD}`,borderRadius:6,padding:"7px 10px",fontSize:12,color:"#1C2B4B",fontFamily:"inherit",outline:"none"}}/>
+  );
+
+  return (
+    <div style={{animation:"fi .4s ease"}}>
+      {/* KPI strip */}
+      <div className="kpi-grid" style={{marginBottom:18}}>
+        <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"16px",borderLeft:`4px solid ${A}`}}>
+          <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Total AOs</div>
+          <div style={{fontSize:22,fontWeight:800,color:"#1C2B4B",fontFamily:"Georgia,serif",lineHeight:1}}>{AOS.length}</div>
+          <div style={{fontSize:10,color:MU,marginTop:4}}>consultations</div>
+        </div>
+        <div style={{background:W,border:`1px solid ${urgentCount>0?"#FCA5A5":BD}`,borderRadius:10,padding:"16px",borderLeft:`4px solid ${urgentCount>0?"#F59E0B":BD}`}}>
+          <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Urgent ≤7j</div>
+          <div style={{fontSize:22,fontWeight:800,color:urgentCount>0?"#F59E0B":"#1C2B4B",fontFamily:"Georgia,serif",lineHeight:1}}>{urgentCount}</div>
+        </div>
+        <div style={{background:W,border:`1px solid ${todayCount>0?"#BBF7D0":BD}`,borderRadius:10,padding:"16px",borderLeft:`4px solid ${todayCount>0?"#22C55E":BD}`}}>
+          <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Ajoutés aujourd'hui</div>
+          <div style={{fontSize:22,fontWeight:800,color:todayCount>0?"#16A34A":"#1C2B4B",fontFamily:"Georgia,serif",lineHeight:1}}>{todayCount}</div>
+          <div style={{fontSize:10,color:MU,marginTop:4}}>nouveaux appels d'offres</div>
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"16px",marginBottom:14,display:"flex",flexDirection:"column",gap:12}}>
+
+        {/* Row 1: search + sort */}
+        <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+          <div style={{flex:"1 1 220px",display:"flex",alignItems:"center",gap:8,background:BG,border:`1px solid ${BD}`,borderRadius:7,padding:"8px 12px"}}>
+            <IcSrch/>
+            <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Acheteur, objet, référence…"
+              style={{border:"none",background:"transparent",outline:"none",fontSize:13,color:"#1C2B4B",width:"100%",fontFamily:"inherit"}}/>
+            {query&&<button onClick={()=>setQuery("")} style={{border:"none",background:"none",cursor:"pointer",color:MU,padding:0,display:"flex",alignItems:"center"}}><IcClose/></button>}
+          </div>
+          <select value={sortBy} onChange={e=>setSortBy(e.target.value)} style={{background:BG,border:`1px solid ${BD}`,borderRadius:7,padding:"8px 12px",fontSize:12,color:"#1C2B4B",fontFamily:"inherit",cursor:"pointer",outline:"none"}}>
+            <option value="deadline">Tri : Date limite</option>
+            <option value="estimation">Tri : Estimation ↓</option>
+            <option value="caution">Tri : Caution ↓</option>
+            <option value="acheteur">Tri : Acheteur A→Z</option>
+          </select>
+        </div>
+
+        {/* Row 2: mode chips + checkboxes */}
+        <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center"}}>
+          <span style={{fontSize:10,color:MU,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em"}}>Mode :</span>
+          {ALL_MODES.map(m=>(
+            <button key={m} onClick={()=>togMode(m)} style={{
+              padding:"4px 10px",borderRadius:20,border:`1.5px solid ${selModes.includes(m)?AO_MODE_COLOR[m]:BD}`,
+              background:selModes.includes(m)?`${AO_MODE_COLOR[m]}18`:W,
+              color:selModes.includes(m)?AO_MODE_COLOR[m]:MU,
+              fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all .15s",
+            }}>{m} <span style={{opacity:.6}}>({modeCounts[m]||0})</span></button>
+          ))}
+          <label style={{display:"flex",alignItems:"center",gap:5,fontSize:11,color:MU,cursor:"pointer",marginLeft:6}}>
+            <input type="checkbox" checked={pmeOnly} onChange={e=>setPmeOnly(e.target.checked)} style={{accentColor:A}}/>PME réservé
+          </label>
+          <label style={{display:"flex",alignItems:"center",gap:5,fontSize:11,color:MU,cursor:"pointer"}}>
+            <input type="checkbox" checked={hideExpired} onChange={e=>setHideExpired(e.target.checked)} style={{accentColor:A}}/>Masquer expirés
+          </label>
+        </div>
+
+        {/* Row 3: range filters */}
+        <div style={{display:"flex",gap:16,flexWrap:"wrap",alignItems:"center",paddingTop:4,borderTop:`1px solid ${BD}`}}>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <span style={{fontSize:11,color:MU,fontWeight:600,whiteSpace:"nowrap"}}>Estimation (DH) :</span>
+            {numInput(minEst, setMinEst, "Min")}
+            <span style={{fontSize:11,color:MU}}>—</span>
+            {numInput(maxEst, setMaxEst, "Max")}
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <span style={{fontSize:11,color:MU,fontWeight:600,whiteSpace:"nowrap"}}>Caution (DH) :</span>
+            {numInput(minCaut, setMinCaut, "Min")}
+            <span style={{fontSize:11,color:MU}}>—</span>
+            {numInput(maxCaut, setMaxCaut, "Max")}
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <span style={{fontSize:11,color:MU,fontWeight:600,whiteSpace:"nowrap"}}>Ajouté le :</span>
+            <input type="date" value={scrapedDate} onChange={e=>setScrapedDate(e.target.value)}
+              style={{background:scrapedDate?`${A}12`:BG,border:`1.5px solid ${scrapedDate?A:BD}`,borderRadius:6,padding:"6px 10px",fontSize:12,color:"#1C2B4B",fontFamily:"inherit",outline:"none",cursor:"pointer"}}/>
+            {scrapedDate&&<button onClick={()=>setScrapedDate("")} style={{border:"none",background:"none",cursor:"pointer",color:MU,padding:0,display:"flex",alignItems:"center"}}><IcClose/></button>}
+          </div>
+          {hasFilter&&<button onClick={reset} style={{marginLeft:"auto",border:"none",background:"none",color:A,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Réinitialiser tout</button>}
+        </div>
+      </div>
+
+      {/* Count */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
+        <span style={{fontSize:13,fontWeight:700,color:"#1C2B4B"}}>{sorted.length} appel{sorted.length>1?"s":""} d'offres</span>
+        {hasFilter&&<span style={{background:`${A}20`,color:A,fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:10}}>Filtré</span>}
+      </div>
+
+      {/* List */}
+      <div style={{display:"flex",flexDirection:"column",gap:14}}>
+        {sorted.length===0
+          ? <div style={{textAlign:"center",padding:50,color:MU,background:W,borderRadius:10,border:`1px solid ${BD}`}}>Aucun appel d'offres ne correspond.</div>
+          : sorted.map(ao=><AOCard key={ao.reference+ao.acheteur} ao={ao}/>)
+        }
+      </div>
+    </div>
+  );
+}
+
+// ─── APP ───────────────────────────────────────────────────────────────────────
+export default function App() {
+  const [agency, setAgency] = useState("PR");
+  const [view,   setView]   = useState("dashboard");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const theme = THEMES[agency];
+  const atts  = agency==="PR" ? ATTS_PR : ATTS_D1;
+  const A = theme.accent;
+
+  const goView = v=>{ setView(v); setMenuOpen(false); };
+  const goAgency = a=>{ setAgency(a); setView("dashboard"); setMenuOpen(false); };
+
+  return (
+    <div style={{fontFamily:"'Segoe UI','Helvetica Neue',Arial,sans-serif",minHeight:"100vh",background:BG,color:"#1C2B4B"}}>
+      <style>{`
+        *{box-sizing:border-box;margin:0;padding:0}
+        ::-webkit-scrollbar{width:5px}
+        ::-webkit-scrollbar-thumb{background:${A}55;border-radius:3px}
+        @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+        @keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+
+        html,body{overflow-x:hidden;max-width:100%}
+
+        /* MOBILE FIRST */
+        .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+        .aos-grid{display:grid;grid-template-columns:1fr;gap:12px}
+        .chart-col{display:flex;flex-direction:column;gap:12px}
+        .chart-row-1{display:flex;flex-direction:column;gap:12px}
+        .chart-pair{display:flex;flex-direction:column;gap:12px}
+        .search-layout{display:block;width:100%}
+        .search-results{min-width:0;overflow:hidden;width:100%}
+        .profiles-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .sidebar-desktop{display:none}
+        .nav-desktop{display:none}
+        .switcher-desktop{display:none}
+        .burger-btn{display:flex!important}
+        .stats-header{display:none}
+
+        /* TABLETTE 640px+ */
+        @media(min-width:640px){
+          .kpi-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+          .chart-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+          .chart-row-1{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}
+          .profiles-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+          .aos-grid{grid-template-columns:1fr 1fr;gap:14px}
+        }
+
+        /* DESKTOP 900px+ */
+        @media(min-width:900px){
+          .kpi-grid{grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+          .aos-grid{grid-template-columns:1fr 1fr;gap:16px}
+          .chart-col{gap:20px}
+          .chart-row-1{display:grid;grid-template-columns:1.6fr 1fr;gap:20px}
+          .chart-pair{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+          .search-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:20px;align-items:start}
+          .sidebar-desktop{display:block!important}
+          .profiles-grid{grid-template-columns:repeat(3,1fr);gap:14px}
+          .nav-desktop{display:flex!important}
+          .switcher-desktop{display:flex!important}
+          .burger-btn{display:none!important}
+          .stats-header{display:block!important}
+        }
+      `}</style>
+
+      {/* ── HEADER ── */}
+      <div style={{background:W,borderBottom:`1px solid ${BD}`,position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 10px rgba(0,0,0,.06)"}}>
+        <div style={{height:3,background:A,transition:"background .3s"}}/>
+        <div style={{padding:"0 16px",display:"flex",alignItems:"center",height:56,gap:12}}>
+
+          {/* Logo + nom */}
+          <div style={{display:"flex",alignItems:"center",gap:9,flexShrink:0}}>
+            <Logo theme={theme} size={36}/>
+            <div>
+              <div style={{fontSize:13,fontWeight:800,color:"#1C2B4B"}}>{theme.name}</div>
+              <div style={{fontSize:8,color:MU,letterSpacing:".08em",textTransform:"uppercase"}}>{theme.sub} · DPR Group</div>
+            </div>
+          </div>
+
+          {/* Nav desktop */}
+          <nav className="nav-desktop" style={{gap:2,marginLeft:16}}>
+            {[["dashboard",<IcGrid/>,"Dashboard"],["search",<IcFind/>,"Attestations"],["profiles",<IcUsers/>,"CVthèque"],["aos",<IcDoc/>,"Appels d'Offres"]].map(([v,ic,l])=>(
+              <button key={v} onClick={()=>goView(v)} style={{background:view===v?`${A}18`:"none",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:600,padding:"7px 12px",borderRadius:6,color:view===v?(theme.key==="D1"?"#8B6800":A):MU,display:"flex",alignItems:"center",gap:6,transition:"all .15s"}}>
+                {ic} {l}
+              </button>
+            ))}
+          </nav>
+
+          {/* Switcher desktop */}
+          <div className="switcher-desktop" style={{marginLeft:"auto",alignItems:"center",gap:10}}>
+            <AgencySwitcher agency={agency} onChange={goAgency}/>
+            <div className="stats-header" style={{textAlign:"right",paddingLeft:10,borderLeft:`1px solid ${BD}`}}>
+              <div style={{fontSize:11,fontWeight:700,color:"#1C2B4B"}}>{atts.length} attestations</div>
+              <div style={{fontSize:10,color:MU}}>{[...new Set(atts.map(a=>a.ann))].length} annonceurs</div>
+            </div>
+          </div>
+
+          {/* Burger mobile */}
+          <button className="burger-btn" onClick={()=>setMenuOpen(!menuOpen)} style={{
+            marginLeft:"auto",border:"none",cursor:"pointer",
+            color:"#1C2B4B",display:"flex",alignItems:"center",justifyContent:"center",
+            width:36,height:36,borderRadius:8,
+            background:menuOpen?LT:"none",
+          }}>
+            {menuOpen?<IcClose/>:<IcBurger/>}
+          </button>
+        </div>
+
+        {/* Menu mobile déroulant */}
+        {menuOpen&&(
+          <div style={{background:W,borderTop:`1px solid ${BD}`,padding:"12px 16px",animation:"slideDown .2s ease",display:"flex",flexDirection:"column",gap:6}}>
+            {/* Nav */}
+            {[["dashboard",<IcGrid/>,"Dashboard"],["search",<IcFind/>,"Attestations"],["profiles",<IcUsers/>,"CVthèque"],["aos",<IcDoc/>,"Appels d'Offres"]].map(([v,ic,l])=>(
+              <button key={v} onClick={()=>goView(v)} style={{background:view===v?`${A}12`:BG,border:`1px solid ${view===v?A:BD}`,borderRadius:8,padding:"11px 14px",cursor:"pointer",fontFamily:"inherit",fontSize:13,fontWeight:600,color:view===v?(theme.key==="D1"?"#8B6800":A):"#1C2B4B",display:"flex",alignItems:"center",gap:10,transition:"all .15s",textAlign:"left"}}>
+                {ic} {l}
+              </button>
+            ))}
+            {/* Switcher agence */}
+            <div style={{borderTop:`1px solid ${BD}`,paddingTop:10,marginTop:4}}>
+              <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Agence</div>
+              <div style={{display:"flex",gap:8}}>
+                {Object.values(THEMES).map(t=>(
+                  <button key={t.key} onClick={()=>goAgency(t.key)} style={{flex:1,padding:"10px",borderRadius:8,border:`1.5px solid ${agency===t.key?t.accent:BD}`,background:agency===t.key?t.accent:W,color:agency===t.key?(t.key==="D1"?"#1C2B4B":"#fff"):MU,fontFamily:"inherit",fontSize:13,fontWeight:700,cursor:"pointer",transition:"all .18s"}}>
+                    {t.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {/* Stats */}
+            <div style={{display:"flex",gap:10,paddingTop:4}}>
+              <div style={{flex:1,background:BG,borderRadius:8,padding:"10px 12px",border:`1px solid ${BD}`}}>
+                <div style={{fontSize:10,color:MU,textTransform:"uppercase",fontWeight:700}}>Attestations</div>
+                <div style={{fontSize:18,fontWeight:800,color:"#1C2B4B"}}>{atts.length}</div>
+              </div>
+              <div style={{flex:1,background:BG,borderRadius:8,padding:"10px 12px",border:`1px solid ${BD}`}}>
+                <div style={{fontSize:10,color:MU,textTransform:"uppercase",fontWeight:700}}>Annonceurs</div>
+                <div style={{fontSize:18,fontWeight:800,color:"#1C2B4B"}}>{[...new Set(atts.map(a=>a.ann))].length}</div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ── CONTENU ── */}
+      <div style={{maxWidth:1120,margin:"0 auto",padding:"18px 14px 40px"}}>
+        {view==="dashboard"&&<Dashboard key={agency} atts={atts} theme={theme}/>}
+        {view==="search"   &&<Search    key={agency} atts={atts} theme={theme}/>}
+        {view==="profiles" &&<Profiles  theme={theme}/>}
+        {view==="aos"      &&<AOsPage/>}
+      </div>
+    </div>
+  );
+}

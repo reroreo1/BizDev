@@ -1,0 +1,1632 @@
+{
+  "ATTS_PR": [
+    {
+      "id": "pr_fondation_cd_2024",
+      "ann": "Fondation CDG",
+      "sec": "Institutionnel",
+      "type": [
+        "Communication institutionnelle"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Organisation de six webinaires et réalisation de six campagnes d'e-mailing",
+      "fid": ""
+    },
+    {
+      "id": "pr_mamda_2021",
+      "ann": "MAMDA",
+      "sec": "Assurances",
+      "type": [
+        "Communication institutionnelle",
+        "Achat médias"
+      ],
+      "m": 4800000,
+      "dv": "TTC",
+      "yr": 2021,
+      "mc": null,
+      "lbl": "Accompagnement en communication et son déploiement",
+      "fid": ""
+    },
+    {
+      "id": "pr_mamda_2023",
+      "ann": "MAMDA",
+      "sec": "Assurances",
+      "type": [
+        "Communication institutionnelle",
+        "Relations presse"
+      ],
+      "m": 3500000,
+      "dv": "HT",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "Stratégie et implémentation de la communication corporate, relations publiques et relations presse",
+      "fid": ""
+    },
+    {
+      "id": "pr_societe_roya_2024",
+      "ann": "SOCIÉTÉ ROYALE D'ENCOURAGEMENT DU CHEVAL",
+      "sec": "Sport / Événementiel",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 2208960,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": "42/2024/SOREC",
+      "lbl": "L'organisation évènementielle du Morocco International Meeting (MIM) pour le compte de la SOREC en lot unique.",
+      "fid": ""
+    },
+    {
+      "id": "pr_societe_roya_2024",
+      "ann": "SOCIÉTÉ ROYALE D'ENCOURAGEMENT DU CHEVAL",
+      "sec": "Sport / Événementiel",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 930600,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": "77/2024/SOREC",
+      "lbl": "La conception et l'installation d'un espace séminaire en location pour la 3ème Edition du Grand Prix d'Afrique (GPA) 2024 – Marrakech.",
+      "fid": ""
+    },
+    {
+      "id": "pr_fondation_cd_2024",
+      "ann": "Fondation CDG",
+      "sec": "Institutionnel",
+      "type": [
+        "Communication institutionnelle"
+      ],
+      "m": 243000,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Organisation de six webinaires et réalisation de six campagnes d'e-mailing",
+      "fid": ""
+    },
+    {
+      "id": "pr_mamda_2021",
+      "ann": "MAMDA",
+      "sec": "Assurances",
+      "type": [
+        "Communication institutionnelle",
+        "Achat médias"
+      ],
+      "m": 4800000,
+      "dv": "TTC",
+      "yr": 2021,
+      "mc": null,
+      "lbl": "Accompagnement en communication et son déploiement",
+      "fid": ""
+    },
+    {
+      "id": "pr_mamda_2023",
+      "ann": "MAMDA",
+      "sec": "Assurances",
+      "type": [
+        "Communication institutionnelle",
+        "Relations presse"
+      ],
+      "m": 3500000,
+      "dv": "HT",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "Stratégie et implémentation de la communication corporate, relations publiques et relations presse",
+      "fid": ""
+    },
+    {
+      "id": "pr_societe_roya_2024",
+      "ann": "SOCIÉTÉ ROYALE D'ENCOURAGEMENT DU CHEVAL",
+      "sec": "Sport / Événementiel",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 2208960,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": "42/2024/SOREC",
+      "lbl": "L'organisation évènementielle du Morocco International Meeting (MIM) pour le compte de la SOREC en lot unique.",
+      "fid": ""
+    },
+    {
+      "id": "pr_societe_roya_2024",
+      "ann": "SOCIÉTÉ ROYALE D'ENCOURAGEMENT DU CHEVAL",
+      "sec": "Sport / Événementiel",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 930600,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": "77/2024/SOREC",
+      "lbl": "La conception et l'installation d'un espace séminaire en location pour la 3ème Edition du Grand Prix d'Afrique (GPA) 2024 – Marrakech.",
+      "fid": ""
+    },
+    {
+      "id": "pr_accor_2020",
+      "ann": "Accor",
+      "sec": "Hôtellerie",
+      "type": [
+        "Relations presse"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2020,
+      "mc": null,
+      "lbl": "Aide à la gestion de l'influence, support dans la production de contenus, gestion campagne offline et infographie",
+      "fid": ""
+    },
+    {
+      "id": "pr_accor_gestio_2024",
+      "ann": "Accor Gestion Maroc",
+      "sec": "Hôtellerie",
+      "type": [
+        "Communication 360°",
+        "Relations presse",
+        "Événementiel",
+        "Achat médias",
+        "Production audiovisuelle"
+      ],
+      "m": 3931823.88,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Conseil en communication sur les volets communication institutionnelle, relations publiques et relations presse, événementiel, achat médias, conception et production de campagnes radio et affichage, production audiovisuelle",
+      "fid": ""
+    },
+    {
+      "id": "pr_accor_2024",
+      "ann": "Accor",
+      "sec": "Hôtellerie",
+      "type": [
+        "Relations presse"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Aide à la gestion des relations presse et influence pour le Maroc",
+      "fid": ""
+    },
+    {
+      "id": "pr_accor_en_afr_2022",
+      "ann": "Accor en Afrique du Nord",
+      "sec": "Hôtellerie",
+      "type": [
+        "Communication institutionnelle",
+        "Relations presse",
+        "Événementiel",
+        "Achat médias",
+        "Production audiovisuelle"
+      ],
+      "m": 3931823.88,
+      "dv": "TTC",
+      "yr": 2022,
+      "mc": null,
+      "lbl": "Conseil en communication sur les volets communication institutionnelle, relations publiques et relations presse, événementiel, achat médias, conception et production de campagnes radio et affichage, production audiovisuelle, et communication de crise",
+      "fid": ""
+    },
+    {
+      "id": "pr_societe_nati_2016",
+      "ann": "Société Nationale des Autoroutes du Maroc",
+      "sec": "Transport",
+      "type": [
+        "Relations presse",
+        "Communication institutionnelle"
+      ],
+      "m": 1314000,
+      "dv": "TTC",
+      "yr": 2016,
+      "mc": "81/16/S.",
+      "lbl": "Organisation de conférence de presse et réalisation d'une veille presse",
+      "fid": ""
+    },
+    {
+      "id": "pr_afriquia_lub_2023",
+      "ann": "Afriquia Lubrifiants Maroc",
+      "sec": "Médias / Presse",
+      "type": [
+        "Relations presse"
+      ],
+      "m": 261276.94,
+      "dv": "TTC",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "Organisation du webinaire - Afriquia Lubrifiant",
+      "fid": ""
+    },
+    {
+      "id": "pr_anfaplace_2019",
+      "ann": "AnfaPlace",
+      "sec": "Immobilier",
+      "type": [
+        "Relations presse",
+        "Achat médias"
+      ],
+      "m": 88000,
+      "dv": "HT",
+      "yr": 2019,
+      "mc": null,
+      "lbl": "Gestion du volet \"relations presse\" et des campagnes médias et hors médias",
+      "fid": ""
+    },
+    {
+      "id": "pr_anouar_inves_2026",
+      "ann": "Anouar Invest",
+      "sec": "Immobilier",
+      "type": [
+        "Relations presse"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2026,
+      "mc": null,
+      "lbl": "Aide à la gestion des relations presse et relations publiques au Maroc",
+      "fid": ""
+    },
+    {
+      "id": "pr_association__2017",
+      "ann": "Association Marocaine des Exportateurs (ASMEX)",
+      "sec": "Médias / Presse",
+      "type": [
+        "Relations presse"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "Accompagnement de l'ASMEX dans les relations presse au Maroc",
+      "fid": ""
+    },
+    {
+      "id": "pr_association__2023",
+      "ann": "Association du Trophée Hassan II de golf",
+      "sec": "Sport / Événementiel",
+      "type": [
+        "Relations presse"
+      ],
+      "m": 300000,
+      "dv": "TTC",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "gestion des relations de presse lors du Trophée Hassan II de Golf et la Coupe Lalla Meryem",
+      "fid": ""
+    },
+    {
+      "id": "pr_aveo_energie_2016",
+      "ann": "AVEO Energie",
+      "sec": "Énergie",
+      "type": [
+        "Relations presse",
+        "Événementiel"
+      ],
+      "m": 17000,
+      "dv": "HT",
+      "yr": 2016,
+      "mc": null,
+      "lbl": "conseil et gestion des relations presse et relations publiques, événementiels, digital au Maroc",
+      "fid": ""
+    },
+    {
+      "id": "pr_bank_assafa_2019",
+      "ann": "Bank Assafa",
+      "sec": "Banque / Finance",
+      "type": [
+        "Production contenus digital"
+      ],
+      "m": 500000,
+      "dv": "TTC",
+      "yr": 2019,
+      "mc": null,
+      "lbl": "accompagnement éditorial et production de contenus",
+      "fid": ""
+    },
+    {
+      "id": "pr_bayer_s_a_2023",
+      "ann": "Bayer S.A.",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Relations presse",
+        "Événementiel"
+      ],
+      "m": 521416.8,
+      "dv": "TTC",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "organisation de conférences hybrides (phygital) - Bayer Corporate Day, retransmission du webinaire",
+      "fid": ""
+    },
+    {
+      "id": "pr_bayer_s_a_2022",
+      "ann": "Bayer S.A.",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Événementiel"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2022,
+      "mc": null,
+      "lbl": "Accompagnement de Bayer dans l'organisation du team building 2022",
+      "fid": ""
+    },
+    {
+      "id": "pr_bourse_de_ca_2017",
+      "ann": "Bourse de Casablanca",
+      "sec": "Banque / Finance",
+      "type": [
+        "Relations presse"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "Accompagnement, conseil et gestion des relations presse et relation publique",
+      "fid": ""
+    },
+    {
+      "id": "pr_cdg_2022",
+      "ann": "CDG",
+      "sec": "Institutionnel",
+      "type": [
+        "Communication institutionnelle"
+      ],
+      "m": 243000,
+      "dv": "TTC",
+      "yr": 2022,
+      "mc": "8920",
+      "lbl": "Organisation de 9 webinaires",
+      "fid": ""
+    },
+    {
+      "id": "pr_danone_2021",
+      "ann": "Danone",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Conseil communication",
+        "Conseil stratégie média"
+      ],
+      "m": 14500000,
+      "dv": "TTC",
+      "yr": 2021,
+      "mc": null,
+      "lbl": "Accompagnement dans l'élaboration de la stratégie de communication globale",
+      "fid": ""
+    },
+    {
+      "id": "pr_casablanca_f_2018",
+      "ann": "Casablanca Finance City",
+      "sec": "Conseil",
+      "type": [
+        "Communication 360°",
+        "Relations presse"
+      ],
+      "m": 1450000,
+      "dv": "TTC",
+      "yr": 2018,
+      "mc": null,
+      "lbl": "élaboration de la stratégie de communication, l'accompagnement et le conseil dans la gestion des relations publiques",
+      "fid": ""
+    },
+    {
+      "id": "pr_compagnie_ge_2020",
+      "ann": "Compagnie Générale Immobilière",
+      "sec": "Immobilier",
+      "type": [
+        "Communication institutionnelle"
+      ],
+      "m": 322680,
+      "dv": "TTC",
+      "yr": 2020,
+      "mc": "MA-SC_CGI-SC_CGI-DC -2020-1531",
+      "lbl": "Cadeaux de fin d'année pour clients et collaborateurs",
+      "fid": ""
+    },
+    {
+      "id": "pr_compagnie_ge_2019",
+      "ann": "Compagnie Générale Immobilière (CGI)",
+      "sec": "Immobilier",
+      "type": [
+        "Communication 360°",
+        "Relations presse"
+      ],
+      "m": 294499.92,
+      "dv": "TTC",
+      "yr": 2019,
+      "mc": "CF_SC_008643",
+      "lbl": "journées portes ouvertes pour le lancement commercial du projet Green Square",
+      "fid": ""
+    },
+    {
+      "id": "pr_compagnie_ge_2019",
+      "ann": "Compagnie Générale Immobilière (CGI)",
+      "sec": "Immobilier",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 288948.38,
+      "dv": "TTC",
+      "yr": 2019,
+      "mc": "CF_SC_008700",
+      "lbl": "Organisation de journées portes ouvertes pour l'exposition photos du projet Auda The Park.",
+      "fid": ""
+    },
+    {
+      "id": "pr_compagnie_ge_2019",
+      "ann": "Compagnie Générale Immobilière",
+      "sec": "Immobilier",
+      "type": [
+        "Communication 360°",
+        "Relations presse"
+      ],
+      "m": 104280,
+      "dv": "TTC",
+      "yr": 2019,
+      "mc": "CF_SC008416",
+      "lbl": "Complément journées portes ouvertes pour le lancement commercial du projet Green Square",
+      "fid": ""
+    },
+    {
+      "id": "pr_compagnie_ge_2019",
+      "ann": "Compagnie Générale Immobilière",
+      "sec": "Immobilier",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 420752.76,
+      "dv": "TTC",
+      "yr": 2019,
+      "mc": "CF_CGI000156",
+      "lbl": "Organisation évènements JPO pour le lancement des résidences ISLI",
+      "fid": ""
+    },
+    {
+      "id": "pr_the_coca_col_2022",
+      "ann": "The Coca-Cola Export Corporation",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 2500000,
+      "dv": "HT",
+      "yr": 2022,
+      "mc": null,
+      "lbl": "Conception et production de l'événement de lancement de la nouvelle plateforme de marque Coca-Cola",
+      "fid": ""
+    },
+    {
+      "id": "pr_the_coca_col_2022",
+      "ann": "The Coca-Cola Export Corporation",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 2500000,
+      "dv": "HT",
+      "yr": 2022,
+      "mc": null,
+      "lbl": "Conception et production de l'événement de lancement de la nouvelle plateforme de marque Coca-Cola",
+      "fid": ""
+    },
+    {
+      "id": "pr_laboratoire__2022",
+      "ann": "Laboratoire Cospharma",
+      "sec": "Cosmétique",
+      "type": [
+        "Communication 360°"
+      ],
+      "m": 7858000,
+      "dv": "HT",
+      "yr": 2022,
+      "mc": null,
+      "lbl": "conception/realisation d'un modele de communication au profit de notre entreprise incluant le monitoring, le reporting et le controlling pour le renforcement de son image de marque",
+      "fid": ""
+    },
+    {
+      "id": "pr_palm_immobil_2018",
+      "ann": "Palm Immobilier",
+      "sec": "Immobilier",
+      "type": [
+        "Relations presse",
+        "Événementiel"
+      ],
+      "m": 600000,
+      "dv": "HT",
+      "yr": 2018,
+      "mc": null,
+      "lbl": "Conseil et gestion des relations presse, relations publiques et événementiels",
+      "fid": ""
+    },
+    {
+      "id": "pr_fondation_mo_2013",
+      "ann": "Fondation Mohammed VI de Promotion des Œuvres Sociales de l'Education-Formation",
+      "sec": "Institutionnel",
+      "type": [
+        "Relations presse"
+      ],
+      "m": 274200,
+      "dv": "HT",
+      "yr": 2013,
+      "mc": "N°13/2013",
+      "lbl": "conseil et gestion des relations presse pour la Fondation Mohammed VI de Promotion des Œuvres Sociales de l'Education-Formation",
+      "fid": ""
+    },
+    {
+      "id": "pr_huawei_2016",
+      "ann": "Huawei",
+      "sec": "Médias / Presse",
+      "type": [
+        "Relations presse",
+        "Événementiel"
+      ],
+      "m": 78000,
+      "dv": "HT",
+      "yr": 2016,
+      "mc": null,
+      "lbl": "Accompagnement, conseil et gestion des relations presse et relations publiques",
+      "fid": ""
+    },
+    {
+      "id": "pr_intelcia_2017",
+      "ann": "INTELCIA",
+      "sec": "Médias / Presse",
+      "type": [
+        "Relations presse"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "Gestion des relations presse pour le Maroc",
+      "fid": ""
+    },
+    {
+      "id": "pr_wana_corpora_2015",
+      "ann": "WANA CORPORATE",
+      "sec": "Immobilier",
+      "type": [
+        "Relations presse"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2015,
+      "mc": null,
+      "lbl": "exécute pour notre compte les prestations suivantes de Relation Presser et Relation Publiques",
+      "fid": ""
+    },
+    {
+      "id": "pr_wana_corpora_2020",
+      "ann": "WANA CORPORATE",
+      "sec": "Institutionnel",
+      "type": [
+        "Relations presse",
+        "Communication institutionnelle"
+      ],
+      "m": 15000000,
+      "dv": "HT",
+      "yr": 2020,
+      "mc": null,
+      "lbl": "Exécuté pour notre compte les prestations suivantes dépassant 15 M Dhs: Relations publiques et relations presse, Communication digitale, Communication institutionnelle, Événementiel et communication de crise",
+      "fid": ""
+    },
+    {
+      "id": "pr_l_oreal_maro_2024",
+      "ann": "L'OREAL MAROC",
+      "sec": "Cosmétique",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 4559430.51,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "gestion événementielle pour nos marques",
+      "fid": ""
+    },
+    {
+      "id": "pr_universite_i_2015",
+      "ann": "Université Internationale de Casablanca",
+      "sec": "Institutionnel",
+      "type": [
+        "Relations presse",
+        "Événementiel"
+      ],
+      "m": 1450000,
+      "dv": "TTC",
+      "yr": 2015,
+      "mc": null,
+      "lbl": "Accompagnement, conseil et gestion des relations presse et événementiels",
+      "fid": ""
+    },
+    {
+      "id": "pr_lg_electroni_2017",
+      "ann": "LG Electronics Morocco",
+      "sec": "Automobile",
+      "type": [
+        "Relations presse",
+        "Événementiel"
+      ],
+      "m": 420000,
+      "dv": "HT",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "conseil et la gestion des relations presse et relations publiques, événementiels",
+      "fid": ""
+    },
+    {
+      "id": "pr_luxo_afrique_2023",
+      "ann": "Luxo-Afrique",
+      "sec": "Médias / Presse",
+      "type": [
+        "Relations presse",
+        "Stratégie digitale"
+      ],
+      "m": 3475000,
+      "dv": "HT",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "accompagnement digital et média online",
+      "fid": ""
+    },
+    {
+      "id": "pr_madaef_2023",
+      "ann": "Madaef",
+      "sec": "Institutionnel",
+      "type": [
+        "Digital"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "accompagnement digital d'un programme entrepreneurial",
+      "fid": ""
+    },
+    {
+      "id": "pr_madaef_2023",
+      "ann": "Madaef",
+      "sec": "Énergie",
+      "type": [
+        "Conseil communication"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "gestion et structuration de la communication de crise",
+      "fid": ""
+    },
+    {
+      "id": "pr_maison_de_l__2023",
+      "ann": "Maison de l'Artisan",
+      "sec": "Institutionnel",
+      "type": [
+        "Communication 360°",
+        "Relations presse"
+      ],
+      "m": 3459168,
+      "dv": "TTC",
+      "yr": 2023,
+      "mc": "Marché N°08/MDA/2023",
+      "lbl": "Prestations relatives à la communication autour de la 8ème édition de la Semaine Nationale de l'Artisanat",
+      "fid": ""
+    },
+    {
+      "id": "pr_mutuelle_agr_2023",
+      "ann": "Mutuelle Agricole Marocaine d'Assurances",
+      "sec": "Assurances",
+      "type": [
+        "Communication institutionnelle",
+        "Relations presse"
+      ],
+      "m": 3500000,
+      "dv": "HT",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "Stratégie et implémentation de la communication corporate, relations publiques et production de contenus institutionnels",
+      "fid": ""
+    },
+    {
+      "id": "pr_mutuelle_agr_2019",
+      "ann": "Mutuelle Agricole Marocaine D'Assurances",
+      "sec": "Assurances",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 1450000,
+      "dv": "TTC",
+      "yr": 2019,
+      "mc": null,
+      "lbl": "Gestion et organisation de l'événement \"Ftour Ramadan\" pour 500 personnes",
+      "fid": ""
+    },
+    {
+      "id": "pr_mutuelle_agr_2019",
+      "ann": "Mutuelle Agricole Marocaine D'Assurances",
+      "sec": "Assurances",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 1450000,
+      "dv": "HT",
+      "yr": 2019,
+      "mc": null,
+      "lbl": "Gestion et organisation de l'événement Ftour Ramadan",
+      "fid": ""
+    },
+    {
+      "id": "pr_mutuelle_agr_2021",
+      "ann": "Mutuelle Agricole Marocaine d'Assurance - MAMDA",
+      "sec": "Assurances",
+      "type": [],
+      "m": 4000000,
+      "dv": "HT",
+      "yr": 2021,
+      "mc": null,
+      "lbl": "Accompagnement sur les prestations suivantes : conseil stratégique en communication, conception, adaptation et production des supports et des outils de communication",
+      "fid": ""
+    },
+    {
+      "id": "pr_maroc_cultur_2013",
+      "ann": "Maroc Cultures",
+      "sec": "Culture / Événementiel",
+      "type": [
+        "Relations presse"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2013,
+      "mc": "0037/MC/2013",
+      "lbl": "Gestion des relations presse et relations publiques du Festival Mawazine",
+      "fid": ""
+    },
+    {
+      "id": "pr_ministere_de_2021",
+      "ann": "Ministère de l'Agriculture, de la Pêche Maritime, du Développement Rural et des Eaux et Forêts",
+      "sec": "Agriculture",
+      "type": [
+        "Production audiovisuelle"
+      ],
+      "m": 1704000,
+      "dv": "TTC",
+      "yr": 2021,
+      "mc": null,
+      "lbl": "production et diffusion de vidéos, reportages, spots et capsules animées",
+      "fid": ""
+    },
+    {
+      "id": "pr_ministere_de_2023",
+      "ann": "Ministère de l'Agriculture, de la Pêche Maritime, du Développement Rural et des Eaux et Forêts",
+      "sec": "Agriculture",
+      "type": [
+        "Production audiovisuelle"
+      ],
+      "m": 1186080,
+      "dv": "TTC",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "conception, production de contenus audiovisuels et documentaires",
+      "fid": ""
+    },
+    {
+      "id": "pr_madame_khadi_2019",
+      "ann": "Madame Khadija IDJAIR",
+      "sec": "Médias / Presse",
+      "type": [
+        "Stratégie digitale"
+      ],
+      "m": 950000,
+      "dv": "HT",
+      "yr": 2019,
+      "mc": "3/2019/MEF/AC/ETU",
+      "lbl": "élaboration d'une stratégie de communication du secteur du microcrédit au Maroc",
+      "fid": ""
+    },
+    {
+      "id": "pr_pa_bridge_2023",
+      "ann": "PA BRIDGE",
+      "sec": "Médias / Presse",
+      "type": [
+        "Relations presse"
+      ],
+      "m": 3800000,
+      "dv": "HT",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "accompagnement en relations publiques et presse",
+      "fid": ""
+    },
+    {
+      "id": "pr_radisson_blu_2019",
+      "ann": "Radisson Blu Hotel",
+      "sec": "Hôtellerie",
+      "type": [
+        "Relations presse",
+        "Digital"
+      ],
+      "m": 574200,
+      "dv": "TTC",
+      "yr": 2019,
+      "mc": null,
+      "lbl": "accompagnement sur le volet relations publiques et digital",
+      "fid": ""
+    },
+    {
+      "id": "pr_realites_afr_2019",
+      "ann": "REALITES Afrique",
+      "sec": "Médias / Presse",
+      "type": [
+        "Achat médias",
+        "Achat médias digital"
+      ],
+      "m": 1099771,
+      "dv": "HT",
+      "yr": 2019,
+      "mc": null,
+      "lbl": "Accompagnement du groupe REALITES sur le volet digital et achat média",
+      "fid": ""
+    },
+    {
+      "id": "pr_association__2024",
+      "ann": "Association du Salon International des Dattes au Maroc",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Communication 360°",
+        "Conseil communication"
+      ],
+      "m": 468450,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Réalisation des prestations de création, campagne d'affichage, print & goodies",
+      "fid": ""
+    },
+    {
+      "id": "pr_association__2026",
+      "ann": "ASSOCIATION DU SALON INTERNATIONAL DES DATTES AU MAROC",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Relations presse",
+        "Événementiel"
+      ],
+      "m": 1878540,
+      "dv": "TTC",
+      "yr": 2026,
+      "mc": null,
+      "lbl": "conseil et la gestion des relations presse et relations publique, événementiels de la 9ème édition du Salon internationale des dattes au Maroc",
+      "fid": ""
+    },
+    {
+      "id": "pr_sorec_2022",
+      "ann": "SOREC",
+      "sec": "Sport / Événementiel",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 6903358.8,
+      "dv": "TTC",
+      "yr": 2022,
+      "mc": "n°32/2022/SOREC",
+      "lbl": "organisation événementiel pour le compte de la SOREC",
+      "fid": ""
+    },
+    {
+      "id": "pr_societe_roya_2024",
+      "ann": "SOCIÉTÉ ROYALE D'ENCOURAGEMENT DU CHEVAL",
+      "sec": "Sport / Événementiel",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 2208960,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": "42/2024/SOREC",
+      "lbl": "L'organisation évènementiel du Morocco International Meeting (MIM) pour le compte de la SOREC en lot unique.",
+      "fid": ""
+    },
+    {
+      "id": "pr_societe_roya_2024",
+      "ann": "SOCIÉTÉ ROYALE D'ENCOURAGEMENT DU CHEVAL",
+      "sec": "Sport / Événementiel",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 930600,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": "77/2024/SOREC",
+      "lbl": "La conception et l'installation d'un espace séminaire en location pour la 3ème Edition du Grand Prix d'Afrique (GPA) 2024 – Marrakech.",
+      "fid": ""
+    },
+    {
+      "id": "pr_sport_plazza_2023",
+      "ann": "Sport Plazza",
+      "sec": "Sport / Événementiel",
+      "type": [
+        "Communication 360°"
+      ],
+      "m": 6587000,
+      "dv": "HT",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "conception/realisation d'un modèle de communication incluant le monitoring, le reporting et le controlling pour le renforcement de son image de marque",
+      "fid": ""
+    },
+    {
+      "id": "pr_tnp_maroc_2021",
+      "ann": "TNP Maroc",
+      "sec": "Médias / Presse",
+      "type": [
+        "Relations presse",
+        "Événementiel"
+      ],
+      "m": 1140000,
+      "dv": "TTC",
+      "yr": 2021,
+      "mc": null,
+      "lbl": "organisation de conférences hybrides (phygital) & l'organisation du webinaire",
+      "fid": ""
+    }
+  ],
+  "ATTS_D1": [
+    {
+      "id": "d1_afriquia_2017",
+      "ann": "AFRIQUIA",
+      "sec": "Médias / Presse",
+      "type": [
+        "Stratégie digitale"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "accompagner Afriquia SMDC dans l'élaboration et l'implémentation de la stratégie digitale",
+      "fid": ""
+    },
+    {
+      "id": "d1_afriquia_2016",
+      "ann": "AFRIQUIA",
+      "sec": "Énergie",
+      "type": [
+        "Stratégie digitale",
+        "Community management"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2016,
+      "mc": null,
+      "lbl": "Accompagnement dans l'élaboration et l'implémentation de la stratégie digitale, le Community management",
+      "fid": ""
+    },
+    {
+      "id": "d1_akwa_immo_de_2018",
+      "ann": "AKWA IMMO DEVELOPPEMENT",
+      "sec": "Immobilier",
+      "type": [
+        "Communication 360°",
+        "Relations presse"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2018,
+      "mc": null,
+      "lbl": "Accompagnement dans le lancement de la campagne Villas des Près sur les réseaux sociaux et achat d'espaces publicitaires",
+      "fid": ""
+    },
+    {
+      "id": "d1_allianz_maro_2017",
+      "ann": "Allianz Maroc",
+      "sec": "Assurances",
+      "type": [
+        "Stratégie digitale"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "Accompagnement dans l'élaboration et l'implémentation de la stratégie digitale",
+      "fid": ""
+    },
+    {
+      "id": "d1_bmce_bank_2017",
+      "ann": "BMCE BANK",
+      "sec": "Banque / Finance",
+      "type": [
+        "E-réputation"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "accompagner BMCE BANK dans la veille et la gestion de l'e-réputation des réseaux sociaux",
+      "fid": ""
+    },
+    {
+      "id": "d1_bmci_2023",
+      "ann": "BMCI",
+      "sec": "Banque / Finance",
+      "type": [
+        "Achat médias digital"
+      ],
+      "m": 1774269,
+      "dv": "TTC",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "accompagnement et l'achat média online pour ses campagnes publicitaires",
+      "fid": ""
+    },
+    {
+      "id": "d1_banque_maroc_2024",
+      "ann": "Banque Marocaine pour le Commerce et l'Industrie",
+      "sec": "Banque / Finance",
+      "type": [
+        "Conseil stratégie média"
+      ],
+      "m": 7200000,
+      "dv": "HT",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Conseil en stratégie média et achat d'espaces publicitaires",
+      "fid": ""
+    },
+    {
+      "id": "d1_banque_maroc_2024",
+      "ann": "Banque Marocaine pour le Commerce et l'Industrie",
+      "sec": "Banque / Finance",
+      "type": [
+        "Conseil stratégie média"
+      ],
+      "m": 7200000,
+      "dv": "HT",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Conseil en stratégie média et achat d'espaces publicitaires",
+      "fid": ""
+    },
+    {
+      "id": "d1_bmci_2024",
+      "ann": "BMCI",
+      "sec": "Banque / Finance",
+      "type": [
+        "Digital"
+      ],
+      "m": 200000,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Campagne d'influence digitale",
+      "fid": ""
+    },
+    {
+      "id": "d1_banque_maroc_2025",
+      "ann": "BANQUE MAROCAINE POUR LE COMMERCE ET L'INDUSTRIE",
+      "sec": "Banque / Finance",
+      "type": [
+        "Production contenus digital"
+      ],
+      "m": 1800000,
+      "dv": "HT",
+      "yr": 2025,
+      "mc": null,
+      "lbl": "achat de production ou coproduction de contenus pour la diffusion sur les réseaux sociaux et plateformes digitales",
+      "fid": ""
+    },
+    {
+      "id": "d1_bayer_2021",
+      "ann": "Bayer",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Achat médias digital"
+      ],
+      "m": 2003799.91,
+      "dv": "TTC",
+      "yr": 2021,
+      "mc": null,
+      "lbl": "Accompagnement et achat média online pour campagnes publicitaires",
+      "fid": ""
+    },
+    {
+      "id": "d1_best_biscuit_2021",
+      "ann": "Best Biscuits Maroc",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Achat médias digital"
+      ],
+      "m": 1713099.55,
+      "dv": "TTC",
+      "yr": 2021,
+      "mc": null,
+      "lbl": "Accompagnement et achat média online pour campagnes publicitaires",
+      "fid": "Best_Biscuits_Maroc_01"
+    },
+    {
+      "id": "d1_best_biscuit_2020",
+      "ann": "BEST BISCUITS MAROC",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Communication 360°",
+        "Relations presse",
+        "Achat médias digital",
+        "Digital",
+        "Communication institutionnelle",
+        "Production audiovisuelle"
+      ],
+      "m": 7700000,
+      "dv": "TTC",
+      "yr": 2020,
+      "mc": null,
+      "lbl": "Accompagnement en communication et son déploiement",
+      "fid": "Best_Biscuits_Maroc_02"
+    },
+    {
+      "id": "d1_compagnie_de_2017",
+      "ann": "Compagnie de Transports au Maroc « CTM »",
+      "sec": "Transport",
+      "type": [
+        "Stratégie digitale",
+        "Community management",
+        "E-réputation"
+      ],
+      "m": 180000,
+      "dv": "HT",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "Accompagnement dans la stratégie digitale, community management et veille des médias en ligne",
+      "fid": ""
+    },
+    {
+      "id": "d1_femmes_du_ma_2025",
+      "ann": "FEMMES du MAROC",
+      "sec": "Médias / Presse",
+      "type": [
+        "Production contenus digital"
+      ],
+      "m": 1450000,
+      "dv": "HT",
+      "yr": 2025,
+      "mc": null,
+      "lbl": "accompagner Caftan Week pour l'achat de production ou coproduction de contenus",
+      "fid": ""
+    },
+    {
+      "id": "d1_communicatio_2025",
+      "ann": "Communication Économique",
+      "sec": "Médias / Presse",
+      "type": [
+        "Production contenus digital"
+      ],
+      "m": 3000000,
+      "dv": "HT",
+      "yr": 2025,
+      "mc": null,
+      "lbl": "Achat de production ou coproduction de contenus pour la diffusion sur les réseaux sociaux et plateformes digitales",
+      "fid": ""
+    },
+    {
+      "id": "d1_carma_media_2018",
+      "ann": "CARMA MEDIA",
+      "sec": "Médias / Presse",
+      "type": [
+        "E-réputation",
+        "Veille presse"
+      ],
+      "m": 200000,
+      "dv": "HT",
+      "yr": 2018,
+      "mc": null,
+      "lbl": "accompagnement en veille presse écrite, web et E-réputation pour CARMA MEDIA",
+      "fid": ""
+    },
+    {
+      "id": "d1_casablanca_e_2019",
+      "ann": "Casablanca Events et Animation",
+      "sec": "Événementiel",
+      "type": [
+        "Événementiel"
+      ],
+      "m": 407040,
+      "dv": "TTC",
+      "yr": 2019,
+      "mc": "21/CEA/2019",
+      "lbl": "Accompagnement de l'animation et la gestion de la page Facebook Wecasablanca",
+      "fid": ""
+    },
+    {
+      "id": "d1_centrale_dan_2024",
+      "ann": "Centrale Danone",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Conseil stratégie média"
+      ],
+      "m": 6700000,
+      "dv": "HT",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Conseil en stratégie media Digital et achat d'espaces publicitaires en Digital",
+      "fid": ""
+    },
+    {
+      "id": "d1_colgate_palm_2017",
+      "ann": "Colgate-Palmolive Maroc",
+      "sec": "Cosmétique",
+      "type": [
+        "Stratégie digitale"
+      ],
+      "m": 1671618,
+      "dv": "TTC",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "Accompagnement dans l'élaboration et l'implémentation de la stratégie digitale pour sa marque Cadum",
+      "fid": "Colgate_Palmolive_Maroc"
+    },
+    {
+      "id": "d1_lesieur_cris_2019",
+      "ann": "Lesieur Cristal",
+      "sec": "Agroalimentaire",
+      "type": [
+        "Communication 360°",
+        "Achat médias digital",
+        "Digital"
+      ],
+      "m": 6000000,
+      "dv": "HT",
+      "yr": 2019,
+      "mc": null,
+      "lbl": "Conception des campagnes de communication et l'élaboration et l'implémentation de la stratégie digitale et des achats sur médias digitaux",
+      "fid": "Communication_Economique"
+    },
+    {
+      "id": "d1_communicatio_2024",
+      "ann": "Communication Économique",
+      "sec": "Médias / Presse",
+      "type": [
+        "Digital"
+      ],
+      "m": 1000000,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Campagne d'influence digitale pour le magazine Femmes du Maroc",
+      "fid": "Communication_Economique_-_Femmes_du_Maroc_01"
+    },
+    {
+      "id": "d1_femmes_du_ma_2025",
+      "ann": "Femmes du Maroc",
+      "sec": "Institutionnel",
+      "type": [
+        "Communication institutionnelle"
+      ],
+      "m": 4000000,
+      "dv": "HT",
+      "yr": 2025,
+      "mc": null,
+      "lbl": "Stratégie et implémentation de la communication corporate, relations publiques et presse, production de contenus institutionnels",
+      "fid": "Communication_Economique_-_Femmes_du_Maroc_02"
+    },
+    {
+      "id": "d1_communicatio_2025",
+      "ann": "Communication Économique",
+      "sec": "Médias / Presse",
+      "type": [
+        "Production contenus digital"
+      ],
+      "m": 1200000,
+      "dv": "HT",
+      "yr": 2025,
+      "mc": null,
+      "lbl": "Achat de production ou coproduction de contenus pour la diffusion sur les réseaux sociaux et plateformes digitales",
+      "fid": "Femmes_du_Maroc_-_Maisons_du_Maroc"
+    },
+    {
+      "id": "d1_goud_media_s_2018",
+      "ann": "Goud Média Sarl.Au",
+      "sec": "Médias / Presse",
+      "type": [
+        "Communication 360°",
+        "Relations presse"
+      ],
+      "m": 1450000,
+      "dv": "TTC",
+      "yr": 2018,
+      "mc": null,
+      "lbl": "conception et développement de son site web www.goud.ma",
+      "fid": ""
+    },
+    {
+      "id": "d1_hydralin_2019",
+      "ann": "Hydralin",
+      "sec": "Médias / Presse",
+      "type": [
+        "Stratégie digitale"
+      ],
+      "m": 1200000,
+      "dv": "TTC",
+      "yr": 2019,
+      "mc": null,
+      "lbl": "Accompagnement dans l'élaboration et l'implémentation de la stratégie digitale",
+      "fid": ""
+    },
+    {
+      "id": "d1_intelcia_2017",
+      "ann": "INTELCIA",
+      "sec": "Médias / Presse",
+      "type": [
+        "Stratégie digitale"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "accompagner INTELCIA dans l'élaboration et l'implémentation de la stratégie digitale",
+      "fid": ""
+    },
+    {
+      "id": "d1_je_shop_sarl_2018",
+      "ann": "JE SHOP SARL",
+      "sec": "E-commerce",
+      "type": [
+        "Digital"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2018,
+      "mc": null,
+      "lbl": "conception et développement de site Web",
+      "fid": ""
+    },
+    {
+      "id": "d1_kabessa_2018",
+      "ann": "KABESSA",
+      "sec": "Hôtellerie",
+      "type": [
+        "Communication 360°"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2018,
+      "mc": null,
+      "lbl": "accompagner Le Cabestan Océan View dans la conception et le développement de son site",
+      "fid": "Le_Cabestan_Ocean_View"
+    },
+    {
+      "id": "d1_marche_d_ori_2018",
+      "ann": "Marché d'Orient SA",
+      "sec": "Hôtellerie",
+      "type": [
+        "Conseil communication"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2018,
+      "mc": "321103, 33152009, 15234102",
+      "lbl": "accompagnement pour la conception et le développement du site du restaurant LILY'S",
+      "fid": "Lily_s_-_Cuisine_Asiatique"
+    },
+    {
+      "id": "d1_mutuelle_agr_2022",
+      "ann": "Mutuelle Agricole Marocaine D'Assurances",
+      "sec": "Assurances",
+      "type": [
+        "Conseil stratégie digitale"
+      ],
+      "m": 938992.8,
+      "dv": "TTC",
+      "yr": 2022,
+      "mc": null,
+      "lbl": "Élaboration & implémentation de la stratégie ; Conseil & accompagnement dans la communication digitale.",
+      "fid": ""
+    },
+    {
+      "id": "d1_mutuelle_agr_2024",
+      "ann": "Mutuelle Agricole Marocaine d'Assurances",
+      "sec": "Assurances",
+      "type": [],
+      "m": 7000000,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Conseil en stratégie média et achat d'espaces publicitaires",
+      "fid": "MAMDA_-_Mutuelle_Agricole_Marocaine"
+    },
+    {
+      "id": "d1_maison_du_ma_2023",
+      "ann": "Maison du Maroc",
+      "sec": "Événementiel",
+      "type": [
+        "Production contenus digital"
+      ],
+      "m": 1200000,
+      "dv": "HT",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "accompagner Maison du Maroc pour l'achat de production ou coproduction de contenus",
+      "fid": ""
+    },
+    {
+      "id": "d1_maroc_cultur_2018",
+      "ann": "Maroc Cultures",
+      "sec": "Culture / Événementiel",
+      "type": [
+        "Communication 360°",
+        "Événementiel"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2018,
+      "mc": "00170/AMC/2018",
+      "lbl": "accompagner Maroc Cultures dans la conception et le développement de ses sites Web",
+      "fid": ""
+    },
+    {
+      "id": "d1_nissaa_min_a_2024",
+      "ann": "Nissaa Min Al Maghrib",
+      "sec": "Médias / Presse",
+      "type": [
+        "Digital"
+      ],
+      "m": 1450000,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Campagne d'influence digitale pour renforcer la notoriété et promouvoir le magazine",
+      "fid": "Nissaa_Min_Al_Maghrib"
+    },
+    {
+      "id": "d1_nissaa_min_a_2023",
+      "ann": "Nissaa Min Almaghrib",
+      "sec": "Médias / Presse",
+      "type": [
+        "Production contenus digital"
+      ],
+      "m": 1200000,
+      "dv": "HT",
+      "yr": 2023,
+      "mc": null,
+      "lbl": "achat de production ou coproduction de contenus pour la diffusion sur les réseaux sociaux et plateformes digitales",
+      "fid": "Nissaa_Min_Almaghrib"
+    },
+    {
+      "id": "d1_unknown_2017",
+      "ann": "PR Media",
+      "sec": "Médias / Presse",
+      "type": [
+        "Achat médias digital"
+      ],
+      "m": 1500000,
+      "dv": "TTC",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "accompagnement, conseil et gestion des achats des médias digitaux",
+      "fid": ""
+    },
+    {
+      "id": "d1_unknown_2017",
+      "ann": "PAR3COM",
+      "sec": "Médias / Presse",
+      "type": [
+        "Achat médias digital"
+      ],
+      "m": 1025285,
+      "dv": "TTC",
+      "yr": 2017,
+      "mc": null,
+      "lbl": "gestion des achats sur médias digitaux",
+      "fid": ""
+    },
+    {
+      "id": "d1_unknown_2018",
+      "ann": "PAR3COM",
+      "sec": "Médias / Presse",
+      "type": [
+        "E-réputation"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2018,
+      "mc": null,
+      "lbl": "veille et la gestion de l'E-réputation des réseaux sociaux",
+      "fid": ""
+    },
+    {
+      "id": "d1_philip_morri_2021",
+      "ann": "PHILIP MORRIS MAGHREB SARL",
+      "sec": "Tabac / FMCG",
+      "type": [
+        "Achat médias digital"
+      ],
+      "m": 1442367.9,
+      "dv": "TTC",
+      "yr": 2021,
+      "mc": null,
+      "lbl": "Accompagnement et achat média online pour ses campagnes publicitaires",
+      "fid": "Philip_Morris_Maghreb"
+    },
+    {
+      "id": "d1_le_president_2018",
+      "ann": "Le Président de l'Association du Salon International des Dattes au Maroc",
+      "sec": "Événementiel",
+      "type": [
+        "Community management"
+      ],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2018,
+      "mc": null,
+      "lbl": "Gestion de réseaux sociaux et conception du site web",
+      "fid": "Salon_International_des_Dattes"
+    },
+    {
+      "id": "d1_scama_2020",
+      "ann": "SCAMA",
+      "sec": "Automobile",
+      "type": [
+        "Stratégie digitale",
+        "Community management"
+      ],
+      "m": 2836145.7,
+      "dv": "TTC",
+      "yr": 2020,
+      "mc": null,
+      "lbl": "Accompagnement dans l'élaboration et l'implémentation de la stratégie digitale, le Community management",
+      "fid": ""
+    },
+    {
+      "id": "d1_skoda_maroc_2022",
+      "ann": "SKODA MAROC",
+      "sec": "Automobile",
+      "type": [
+        "Conseil stratégie digitale"
+      ],
+      "m": 750000,
+      "dv": "HT",
+      "yr": 2022,
+      "mc": null,
+      "lbl": "Élaboration & implémentation de la stratégie ; Conseil & accompagnement dans la communication digitale.",
+      "fid": ""
+    },
+    {
+      "id": "d1_supradyn_2021",
+      "ann": "Supradyn",
+      "sec": "Cosmétique",
+      "type": [
+        "Stratégie digitale",
+        "Achat médias digital"
+      ],
+      "m": 1259000,
+      "dv": "HT",
+      "yr": 2021,
+      "mc": null,
+      "lbl": "Accompagnement dans l'élaboration et l'implémentation de la stratégie digitale et des achats sur médias digitaux",
+      "fid": ""
+    },
+    {
+      "id": "d1_association__2024",
+      "ann": "Association du Trophée Hassan II de golf",
+      "sec": "Sport / Événementiel",
+      "type": [
+        "Communication 360°",
+        "Événementiel"
+      ],
+      "m": 1450000,
+      "dv": "TTC",
+      "yr": 2024,
+      "mc": null,
+      "lbl": "Création de contenu et couverture sur les réseaux sociaux",
+      "fid": ""
+    },
+    {
+      "id": "d1_asia_maroc_2018",
+      "ann": "ASIA MAROC",
+      "sec": "Restauration",
+      "type": [],
+      "m": null,
+      "dv": "N/A",
+      "yr": 2018,
+      "mc": null,
+      "lbl": "accompagnement dans la conception et le développement du site pour le restaurant Umayya (Cuisine Orientale)",
+      "fid": "Umayya_-_Cuisine_Orientale"
+    }
+  ]
+}

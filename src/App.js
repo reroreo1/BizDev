@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import BizDevLogo from "./logo-biz-dev.png";
 import JSZip from "jszip";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis } from "recharts";
 import attestationData from "./data.json";
@@ -7,8 +8,6 @@ import aosRaw from "./AOs.json";
 const { ATTS_PR, ATTS_D1 } = attestationData;
 const AOS = Array.isArray(aosRaw) ? aosRaw : (aosRaw.results || []);
 
-const D1_LOGO = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABDCAYAAAA/KkOEAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAKsElEQVR42uWce4zcVRXHP+fe+/v9Zt8PuqXdPmihLW3akraUghUIBJCAWDAGTeQhhqoJGJEQSTQmGJU/xCgEAsSIPMLD+PinihKNAhFBoNDyKIUChbbQ1lKou92d7sz8Hsc/fr/uzrbbdnc7OzPaXzKZ3ZnZnXu/95zvOed77u9K/ukORSNAqP1lQCyIBzaH2GZw7YjXhQTdSMMsTMNJSOMcTO4ExLUO/3NNgCT9HxWaj0Mj6gcgQDV9RIpmE1aN07cAxCK2CbzjMU1zMS3LMG0rMa3LMX5XCjKAxumcxBzVcCT/VKvWFUBDQxt6lrLfVYEYkhCSMP1VQIIpmLYzsF2rsJMuxvjHl1kV4waqjgEaBYBisnErJEWIiyggwVRs1yW47tXYthVDFjX4+WMCoMMAlhTRuADGx066BG/Wzdi208uAssciQAeCZVMwon7UBLjua/BO+iHGnzwmkAz/l5dmgUfBa0WMR/TBLyi8uIJw95oMnGQ/7R+LAJVjFQOK+G1Q2knp1csobv4+Ojh1PcYBGgQqAhMgroVo860UX78CTcIjgnTsALQ/5GuC+O3EOx+j8PoXU5BUDwnSxAAkFsRNwMNWCKgQ8dtJdq2huPHaNPrpyJzkKh89BMK9o6C/8Qan5lGR62hBinc8QqlxDv6Jt4wY3SoX5rNV0CiPm/4NbPuny5KzCriGWJJ97xBu/QkifmVAyhZUo36CpU/gjrvwIJAqA5A4SAZQBW/e7fgzrpsQz437XqPw4hLENGdhuhIYGYiLkJtBw4qX0gJYZBCPo19e8SDqBTeJYOmfU3A0ZrAIrsQjKabPUU/lE1pNwDai+c2Utvy4jI+OmqQFxKGlHqT1dHKnPYPrPC+dyGhIGsnkjTLyPeLf2QmxTDRCvCaiD39BnN80DKRxApTWPFrqxXZfSe7UJzENJ2b+OxrezzQbMeh+9x4ETan+pSAOCfuJtv1s2DjGDpBY0BCN+/Hm3kpu0cOIbRwk0lGZNIZoz98pvHIphReWMbB2JaUtt2WJW41A0hi8BqJdvyMpbB0sR9yYyTjqA9eGv+gxvMmfH4pUo4lWWYQIdz5CacNVKZsYBySEe/5F0vscweLfIsYdoAlVy4p8KPUQ7XwUf/b3QJMxWJB4aNgLTQsIlj+dgRONQd7UNFSXdhG+fSNiA/DawTSAbUJyncT/XkO088HUsDMVsbpXglhL/NHvU9cXOxqAUulASz2Yrs/RsPwf2OZTMnDc2EwYSHqeRUsfg8mBhikfaZISpTXEux+vXRWkCZgGkv4NJP2vAXKEUWR+qOFe3OzvkFvyB8TrHAMZj5TM5A9jcQpJofredeCc45D4k78dYZnEQZwmf/7CBwjm3oZQ3jUYT+QDaVkKZr8eI8O+TxNFWpaVkXlttCQRSHqeOQxA4kHYC8E0gmV/xeu+pqzzMU7Tz3IL27wIN201WujLeMkABi3tgYZuvBnXl71eo4rfeiT5N0iingOjWBnfdJ5DsPhhTDB97HxzSJAESPDn3QGSI95xPxrtBXGY9pX48+/B5GZk1mVqZkFpNNuF5jeVASQGVNPkb8bXCU6+CzH+0fHNSISPIMYnOPl2dM6tJAPvI64Nk5s+lETWWqYSi0Z7SfIbM4DEpZ0AjfHm344/89vDquiKrxCCRr1Eux9HB94F14rtPB/bvLiu9LUk/yYOcRDuAW8ywcIHcZMuKqunzOCEKubfYkjyb1F47Qto38bBt0Lr4839Kf7Mbw1+robSY5rPD2zBaWkPpnUp/uLfYBvnjsA3UkHfFjQpUnzjaujbiAQdWbQS0BLhphswLafgOs4Zc/+q8kZu0dJOjO3+CsGpT2XgVJJvRqrBhLjnOZLeteC3QVLKJI0QxEeAaPv99SBepxYcfoLTgc0U112QDdKmAnZ5vXjgzxzuPQtxHtP+KYIF9x1AuOkHtbD1EFaZpFGuuH0oaNT0smjch9Pe5zO3qsCAxEIUov6kQ0QwkIYTDlGtp1GU3LQJDBBjowPiAg7bDFSo9SwWdG9agI6UKKLYtpWYthVoz4twAAcp4LpX10kME9AQM1QsVvAxol4soIqYAH/hQ9CyEC3+By31oqUeNInw5t+F6zi7xtYz3JJcdRcls6Km+TSc9hzRx39C972LuFZM53nY5kUZF5m6sSJXE9NFEdeK61pFMvAe4tqzEqOWZfzIMqyr+peiaBJSeudmoh0PpAqlsZiW0/AX3IttWVIH5UZKB5iGKo9CFTCUNt1A9P6dCAnitSC2Ee19nuL6i0kK2zIrSmpsQTHiWqoIUFY+xP0biHb8Csm1ZCuVEbvfiRZ2En5w99DrNbWgBLzjqmlB6YS1bz0kceZCZfmQRogRkr71tU8UBdAY8afWwNFtE4du6whicsOz9ZohBNIwu4oAZXmNaT8TCbpS7Vm81JIk7bBqnGC7Vg2zuFpFMAVM0/xqWpCAxhh/Mt6829G4iIY9kAxAnEcLe7BTLsNNvZrx696V40uxjZimhdVOFC1ogjflCiToJtp2JzrwHtgW3OTL8GbegIhXWQ1qPAuZpLs9TNPJNUgUxQAJruNcXMe5I+g+tQQnHZ8mIbZ5IeLaapFJ76/c4zJu0jIVsdaZtICCaT8LYKIA0tG5W7nF1EVxmoZ3rIftPH//Uk5UxNJRxuo62uEvBpIBTMspaXu9bDd1ZX046ssmbmucEY/d9TWOsZMvH7yVwVTcPE0T2ruWwoYr0Tif9dui/wFwUtFO/A7clC8PLvYEuFgCNke841EKL59LvO/ttBFQ7yCJhXAAM+VLqfSiaTk0MRyU7WbXvWspvnQ20cdPZCDFta4hDmM9Ieq14M28aViqMXGZtIbg2iDqofjKKkpbfz602areeEkcGu7Dzbge2zhnWONyYksNjcD4iM0RbrqJwsZr0aSQ8VJcJ+AYiPNI8zz8Wd89qKs78bVYZi3itxF/eD+Fl88nGdiSRYmo9q4FqMb48+/J7qIenslXqVhNb3ATvx3tfZbCS2cS7Xmy9rwkDi314Z30o2yP98Ht7ipLrhkvlXZTXH8RpQ/uHhpQtXlJPLTUg53+1WxH68jN0+oLZhqBDRDjEb71TYpvXZftKK0WL8kQOFMuJ1jwy7I+nNQBQIPWIojXRrTtXgrrLiQpfjjxvCQm3WFS6sFOu4Zg8a+R7LVDlTw1FH7LeGnPUxTWnkXU88+ypFIrzjfEBTTqx835AbmFD6TgHKEerH0LU0Pw2qC4neK6z1Dafl/ZFpwK8FLmOlrqhdwMgiV/JDjxljLOkyMJM/UgMUTpYSYihBu/RnHTjWjWQxsfLw3dHKPhXlQj7Mzrya14ATfps2M6hcFRL1d2k4t4rURb7yDJv0mw6KH0DI6kOAq9qPzkhdSVsDns8ZenJy+0Lh8qqMegPdUPQIO8FKc33H7yFwprzyRY9Gh6/sZBN92OcHZHlJ3dkevGTV2Fm7Ya23pqGTBmzMJcnQE0xEvitUNhK4V1F+DPvxtv6pVZm2g/IAVIorLTX6ZijjsD23UpdtJF6REU5fnVOBVLN3rlr5oAKehAelZQ3EfplatI+l/Fdp6XdmWtQxpmI43zkJZl2PaVmJblmPKdbRU6P8gNRYw6kT7FpjvdTXYCldeB8brQ0kdoPECwZA2Sm4VpmHX4E6gqpHH/F+oVsFpzBtP3AAAAAElFTkSuQmCC";
-const PR_LOGO = "data:image/png;base64,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";
 
 const THEMES = {
   PR: { key:"PR", name:"PR Media", sub:"Burson affiliate", accent:"#E8392A", navy:"#1C2B4B" },
@@ -37,25 +36,9 @@ const IcUsers = ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" 
 const IcDl    = ()=><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>;
 const IcDoc   = ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>;
 
-function Logo({ theme, size=38 }) {
-  return <img src={theme.key==="D1"?D1_LOGO:PR_LOGO} width={size} height={size} alt={theme.name} style={{objectFit:"contain",display:"block",flexShrink:0}}/>;
-}
 
-function AgencySwitcher({ agency, onChange }) {
-  return (
-    <div style={{display:"flex",background:LT,borderRadius:8,padding:3,gap:2}}>
-      {Object.values(THEMES).map(t=>(
-        <button key={t.key} onClick={()=>onChange(t.key)} style={{
-          padding:"6px 14px",borderRadius:6,border:"none",cursor:"pointer",
-          fontFamily:"inherit",fontSize:12,fontWeight:700,whiteSpace:"nowrap",
-          background:agency===t.key?t.accent:"transparent",
-          color:agency===t.key?(t.key==="D1"?"#1C2B4B":"#fff"):MU,
-          transition:"all .18s",
-        }}>{t.name}</button>
-      ))}
-    </div>
-  );
-}
+
+
 
 const CTip=({active,payload,label})=>{
   if(!active||!payload?.length)return null;
@@ -96,7 +79,9 @@ function cleanMode(s) {
 }
 
 // ─── DASHBOARD ────────────────────────────────────────────────────────────────
-function Dashboard({ atts, theme }) {
+function Dashboard({ atts: allAtts, theme }) {
+  const [selAgency, setSelAgency] = useState("Tous");
+  const atts = selAgency==="Tous" ? allAtts : allAtts.filter(a=>a._ag===selAgency);
   const A=theme.accent;
   const total=atts.filter(a=>a.m).reduce((s,a)=>s+a.m,0);
   const anns=[...new Set(atts.map(a=>a.ann))];
@@ -129,6 +114,18 @@ function Dashboard({ atts, theme }) {
 
   return (
     <div style={{animation:"fi .4s ease"}}>
+      {/* Agency filter */}
+      <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:16}}>
+        {["Tous","PR Media","D1 Social"].map(ag=>(
+          <button key={ag} onClick={()=>setSelAgency(ag)} style={{
+            padding:"4px 10px",borderRadius:20,fontSize:11,fontWeight:500,cursor:"pointer",fontFamily:"inherit",
+            border:`1.5px solid ${selAgency===ag?A:BD}`,
+            background:selAgency===ag?`${A}20`:W,
+            color:selAgency===ag?(theme.key==="D1"?"#1C2B4B":A):MU,
+            transition:"all .12s",
+          }}>{ag}</button>
+        ))}
+      </div>
       {/* KPIs */}
       <div className="kpi-grid">
         {kpis.map(([label,val,sub],i)=>(
@@ -243,7 +240,9 @@ function Dashboard({ atts, theme }) {
 }
 
 // ─── RECHERCHE ────────────────────────────────────────────────────────────────
-function Search({ atts, theme }) {
+function Search({ atts: allAtts, theme }) {
+  const [selAgency, setSelAgency] = useState("Tous");
+  const atts = selAgency==="Tous" ? allAtts : allAtts.filter(a=>a._ag===selAgency);
   const A=theme.accent;
   const [query,    setQuery]    = useState("");
   const [selTypes, setSelTypes] = useState([]);
@@ -275,13 +274,21 @@ function Search({ atts, theme }) {
   const toggle   = (id,v)=>setSelIds(p=>v?(p.includes(id)?p:[...p,id]):p.filter(x=>x!==id));
   const togType  = t=>setSelTypes(p=>p.includes(t)?p.filter(x=>x!==t):[...p,t]);
   const togSec   = s=>setSelSecs(p=>p.includes(s)?p.filter(x=>x!==s):[...p,s]);
-  const hasFilter= query||selTypes.length||selSecs.length||minM||minY;
-  const reset    = ()=>{setQuery("");setSelTypes([]);setSelSecs([]);setMinM("");setMinY("");};
+  const hasFilter= query||selAgency!=="Tous"||selTypes.length||selSecs.length||minM||minY;
+  const reset    = ()=>{setQuery("");setSelAgency("Tous");setSelTypes([]);setSelSecs([]);setMinM("");setMinY("");};
   const selAtts  = atts.filter(a=>selIds.includes(a.id));
   const inp      = {width:"100%",background:BG,border:`1.5px solid ${BD}`,borderRadius:6,color:"#1C2B4B",fontFamily:"inherit",fontSize:13,padding:"9px 11px",outline:"none"};
 
   const FilterContent = ()=>(
     <div style={{padding:"16px",display:"flex",flexDirection:"column",gap:16}}>
+      <div>
+        <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Agence</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+          {["Tous","PR Media","D1 Social"].map(ag=>(
+            <button key={ag} onClick={()=>setSelAgency(ag)} style={{padding:"4px 10px",borderRadius:20,fontSize:11,fontWeight:500,cursor:"pointer",fontFamily:"inherit",border:`1.5px solid ${selAgency===ag?A:BD}`,background:selAgency===ag?`${A}20`:W,color:selAgency===ag?(theme.key==="D1"?"#1C2B4B":A):MU,transition:"all .12s"}}>{ag}</button>
+          ))}
+        </div>
+      </div>
       <div>
         <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Type de prestation</div>
         <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
@@ -912,6 +919,51 @@ function AOCard({ ao }) {
   );
 }
 
+const AO_KEYWORDS = [
+    { cat:"PR Media", color:"#E8392A", kws:[
+    "relations publiques","agence de presse","relations presse","relations médias",
+    "attaché de presse","veille médiatique","système de veille médiatique","monitoring presse",
+    "revue de presse","communication de crise","gestion de la communication de crise",
+    "communication institutionnelle","bilan d'image","réputation","e-réputation",
+    "conférence de presse","communiqué de presse","dossier de presse","media training",
+    "accompagnement presse","conseil institutionnel","conseil en communication",
+    "élaboration plan de communication","mise en oeuvre du plan de communication",
+    "stratégie de communication","accompagnement en communication",
+    "assistance à maîtrise d'ouvrage communication","communication et sensibilisation",
+    "guide de communication","charte de communication",
+    "appel à manifestation d'intérêt communication",
+  ]},
+    { cat:"D1 Social", color:"#C4971A", kws:[
+    "agence digitale","gestion réseaux sociaux","community management","campagne digitale",
+    "campagne d'influence","influence marketing","influenceurs","achat média digital",
+    "achat d'espaces publicitaires","achat d'espace publicitaire en ligne",
+    "conseil média et achat d'espace","plan média","production audiovisuelle",
+    "production de films institutionnels","films promotionnels","production spots publicitaires",
+    "production de capsules","capsules institutionnelles","capsules vidéo",
+    "production et diffusion de contenu","stratégie de contenu","content marketing",
+    "supports et outils de communication","conception adaptation impression supports",
+    "campagne de sensibilisation","marketing territorial","promotion offline et digitale",
+    "communication offline et digitale","communication digitale","panneaux publicitaires",
+    "affichage publicitaire","habillage","branding","identité visuelle","charte graphique",
+    "design graphique","refonte site web","promotion et visibilité institutionnelle",
+    "360°","accompagnement communication",
+  ]},
+  { cat:"DPR Event", color:"#6B7FA3", kws:[
+    "événement","organisation événement","organisation séminaire","organisation conférence",
+    "organisation salon","organisation forum","organisation congrès","participation salon international",
+    "gestion logistique événement","activation événementielle","roadshow","visite de prospection",
+    "inauguration","convention d'entreprise","team building","journée portes ouvertes","gala",
+    "soirée de remise de prix","organisation cérémonie officielle","manifestation artistique",
+    "manifestation culturelle","organisation festival","aménagement de stands","pavillon du Maroc",
+    "pavillon national","scénographie","location matériel scénique","sonorisation",
+    "éclairage événementiel","prestations techniques événementielles","chapiteaux","tente caïdale",
+    "pavoisement","caravane nationale","tournée régionale","animation pavillon","animation stand",
+    "cérémonie de remise des prix","réception hébergement restauration événement",
+    "journée d'étude","atelier","rencontre","event management","prestation événementielle",
+    "caravane","street marketing",
+  ]}
+];
+
 function AOsPage() {
   const A = AO_ACCENT;
   const [query,      setQuery]      = useState("");
@@ -924,6 +976,12 @@ function AOsPage() {
   const [minCaut,    setMinCaut]    = useState("");
   const [maxCaut,    setMaxCaut]    = useState("");
   const [scrapedDate,setScrapedDate]= useState(()=>new Date().toISOString().slice(0,10));
+  const [selKeywords,setSelKeywords]= useState([]);
+  const [kwOpen,     setKwOpen]     = useState(false);
+
+  const norm   = s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+  const aoText = ao=>norm([ao.intitule,ao.acheteur,ao.reference,ao.lieu,ao.type_procedure,ao.mode_passation,ao.adresse_retrait,ao.lieu_ouverture,ao.contact].filter(Boolean).join(" "));
+  const togKw  = kw=>setSelKeywords(p=>p.includes(kw)?p.filter(x=>x!==kw):[...p,kw]);
 
   const ALL_MODES   = useMemo(()=>[...new Set(AOS.map(a=>a.mode).filter(Boolean))].sort(),[]);
   const modeCounts  = useMemo(()=>{ const c={}; AOS.forEach(a=>{c[a.mode]=(c[a.mode]||0)+1;}); return c; },[]);
@@ -949,8 +1007,9 @@ function AOsPage() {
     if (minCaut) list = list.filter(a=>{ const c=parseCaution(a.caution_provisoire); return c!==null&&c>=parseFloat(minCaut); });
     if (maxCaut) list = list.filter(a=>{ const c=parseCaution(a.caution_provisoire); return c!==null&&c<=parseFloat(maxCaut); });
     if (scrapedDate) list = list.filter(a=>a.scraped_at&&a.scraped_at.slice(0,10)===scrapedDate);
+    if (selKeywords.length) list = list.filter(a=>{ const t=aoText(a); return selKeywords.some(kw=>kw.split(" ").every(token=>t.includes(norm(token)))); });
     return list;
-  },[query,selModes,pmeOnly,hideExpired,minEst,maxEst,minCaut,maxCaut,scrapedDate]);
+  },[query,selModes,pmeOnly,hideExpired,minEst,maxEst,minCaut,maxCaut,scrapedDate,selKeywords]);
 
   const sorted = useMemo(()=>{
     const list = [...filtered];
@@ -974,8 +1033,8 @@ function AOsPage() {
   },[filtered,sortBy]);
 
   const togMode   = m=>setSelModes(p=>p.includes(m)?p.filter(x=>x!==m):[...p,m]);
-  const hasFilter = query||selModes.length||pmeOnly||hideExpired||minEst||maxEst||minCaut||maxCaut||scrapedDate;
-  const reset     = ()=>{ setQuery(""); setSelModes([]); setPmeOnly(false); setHideExpired(false); setMinEst(""); setMaxEst(""); setMinCaut(""); setMaxCaut(""); setScrapedDate(""); };
+  const hasFilter = query||selModes.length||pmeOnly||hideExpired||minEst||maxEst||minCaut||maxCaut||scrapedDate||selKeywords.length;
+  const reset     = ()=>{ setQuery(""); setSelModes([]); setPmeOnly(false); setHideExpired(false); setMinEst(""); setMaxEst(""); setMinCaut(""); setMaxCaut(""); setScrapedDate(""); setSelKeywords([]); };
 
   const numInput = (value, setter, placeholder) => (
     <input value={value} onChange={e=>setter(e.target.value)} type="number" placeholder={placeholder}
@@ -1062,6 +1121,33 @@ function AOsPage() {
           </div>
           {hasFilter&&<button onClick={reset} style={{marginLeft:"auto",border:"none",background:"none",color:A,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Réinitialiser tout</button>}
         </div>
+
+        {/* Row 4: keyword filters */}
+        <div style={{borderTop:`1px solid ${BD}`,paddingTop:10}}>
+          <button onClick={()=>setKwOpen(v=>!v)} style={{background:"none",border:"none",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontFamily:"inherit",fontSize:11,fontWeight:700,color:selKeywords.length?A:MU,padding:0}}>
+            <IcFilter/> Mots-clés métier{selKeywords.length?` (${selKeywords.length} actif${selKeywords.length>1?"s":""})`:""} <span style={{fontSize:9,marginLeft:2}}>{kwOpen?"▲":"▼"}</span>
+          </button>
+          {kwOpen&&(
+            <div style={{marginTop:12,display:"flex",flexDirection:"column",gap:12}}>
+              {AO_KEYWORDS.map(({cat,color,kws})=>(
+                <div key={cat}>
+                  <div style={{fontSize:9,color,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:5}}>{cat}</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
+                    {kws.map(kw=>(
+                      <button key={kw} onClick={()=>togKw(kw)} style={{
+                        padding:"3px 9px",borderRadius:20,fontSize:11,fontWeight:500,cursor:"pointer",fontFamily:"inherit",
+                        border:`1.5px solid ${selKeywords.includes(kw)?color:BD}`,
+                        background:selKeywords.includes(kw)?`${color}18`:W,
+                        color:selKeywords.includes(kw)?color:MU,
+                        transition:"all .12s",
+                      }}>{kw}</button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Count */}
@@ -1087,7 +1173,10 @@ export default function App() {
   const [view,   setView]   = useState("dashboard");
   const [menuOpen, setMenuOpen] = useState(false);
   const theme = THEMES[agency];
-  const atts  = agency==="PR" ? ATTS_PR : ATTS_D1;
+  const allAtts = useMemo(()=>[
+    ...ATTS_PR.map(a=>({...a,_ag:"PR Media"})),
+    ...ATTS_D1.map(a=>({...a,_ag:"D1 Social"})),
+  ],[]);
   const A = theme.accent;
 
   const goView = v=>{ setView(v); setMenuOpen(false); };
@@ -1151,13 +1240,9 @@ export default function App() {
         <div style={{height:3,background:A,transition:"background .3s"}}/>
         <div style={{padding:"0 16px",display:"flex",alignItems:"center",height:56,gap:12}}>
 
-          {/* Logo + nom */}
-          <div style={{display:"flex",alignItems:"center",gap:9,flexShrink:0}}>
-            <Logo theme={theme} size={36}/>
-            <div>
-              <div style={{fontSize:13,fontWeight:800,color:"#1C2B4B"}}>{theme.name}</div>
-              <div style={{fontSize:8,color:MU,letterSpacing:".08em",textTransform:"uppercase"}}>{theme.sub} · DPR Group</div>
-            </div>
+          {/* Logo */}
+          <div style={{display:"flex",alignItems:"center",flexShrink:0}}>
+            <img src={BizDevLogo} height={42} alt="BizDev by DPR Group" style={{objectFit:"contain",display:"block"}}/>
           </div>
 
           {/* Nav desktop */}
@@ -1169,12 +1254,11 @@ export default function App() {
             ))}
           </nav>
 
-          {/* Switcher desktop */}
+          {/* Stats desktop */}
           <div className="switcher-desktop" style={{marginLeft:"auto",alignItems:"center",gap:10}}>
-            <AgencySwitcher agency={agency} onChange={goAgency}/>
-            <div className="stats-header" style={{textAlign:"right",paddingLeft:10,borderLeft:`1px solid ${BD}`}}>
-              <div style={{fontSize:11,fontWeight:700,color:"#1C2B4B"}}>{atts.length} attestations</div>
-              <div style={{fontSize:10,color:MU}}>{[...new Set(atts.map(a=>a.ann))].length} annonceurs</div>
+            <div className="stats-header" style={{textAlign:"right"}}>
+              <div style={{fontSize:11,fontWeight:700,color:"#1C2B4B"}}>{allAtts.length} attestations</div>
+              <div style={{fontSize:10,color:MU}}>{[...new Set(allAtts.map(a=>a.ann))].length} annonceurs</div>
             </div>
           </div>
 
@@ -1198,26 +1282,15 @@ export default function App() {
                 {ic} {l}
               </button>
             ))}
-            {/* Switcher agence */}
-            <div style={{borderTop:`1px solid ${BD}`,paddingTop:10,marginTop:4}}>
-              <div style={{fontSize:10,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Agence</div>
-              <div style={{display:"flex",gap:8}}>
-                {Object.values(THEMES).map(t=>(
-                  <button key={t.key} onClick={()=>goAgency(t.key)} style={{flex:1,padding:"10px",borderRadius:8,border:`1.5px solid ${agency===t.key?t.accent:BD}`,background:agency===t.key?t.accent:W,color:agency===t.key?(t.key==="D1"?"#1C2B4B":"#fff"):MU,fontFamily:"inherit",fontSize:13,fontWeight:700,cursor:"pointer",transition:"all .18s"}}>
-                    {t.name}
-                  </button>
-                ))}
-              </div>
-            </div>
             {/* Stats */}
             <div style={{display:"flex",gap:10,paddingTop:4}}>
               <div style={{flex:1,background:BG,borderRadius:8,padding:"10px 12px",border:`1px solid ${BD}`}}>
                 <div style={{fontSize:10,color:MU,textTransform:"uppercase",fontWeight:700}}>Attestations</div>
-                <div style={{fontSize:18,fontWeight:800,color:"#1C2B4B"}}>{atts.length}</div>
+                <div style={{fontSize:18,fontWeight:800,color:"#1C2B4B"}}>{allAtts.length}</div>
               </div>
               <div style={{flex:1,background:BG,borderRadius:8,padding:"10px 12px",border:`1px solid ${BD}`}}>
                 <div style={{fontSize:10,color:MU,textTransform:"uppercase",fontWeight:700}}>Annonceurs</div>
-                <div style={{fontSize:18,fontWeight:800,color:"#1C2B4B"}}>{[...new Set(atts.map(a=>a.ann))].length}</div>
+                <div style={{fontSize:18,fontWeight:800,color:"#1C2B4B"}}>{[...new Set(allAtts.map(a=>a.ann))].length}</div>
               </div>
             </div>
           </div>
@@ -1226,8 +1299,8 @@ export default function App() {
 
       {/* ── CONTENU ── */}
       <div style={{maxWidth:1120,margin:"0 auto",padding:"18px 14px 40px"}}>
-        {view==="dashboard"&&<Dashboard key={agency} atts={atts} theme={theme}/>}
-        {view==="search"   &&<Search    key={agency} atts={atts} theme={theme}/>}
+        {view==="dashboard"&&<Dashboard atts={allAtts} theme={theme}/>}
+        {view==="search"   &&<Search    atts={allAtts} theme={theme}/>}
         {view==="profiles" &&<Profiles  theme={theme}/>}
         {view==="aos"      &&<AOsPage/>}
       </div>

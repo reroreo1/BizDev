@@ -1009,6 +1009,7 @@ function AOsPage() {
     if (scrapedDate) list = list.filter(a=>a.scraped_at&&a.scraped_at.slice(0,10)===scrapedDate);
     if (selKeywords.length) list = list.filter(a=>{ const t=aoText(a); return selKeywords.some(kw=>kw.split(" ").every(token=>t.includes(norm(token)))); });
     return list;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[query,selModes,pmeOnly,hideExpired,minEst,maxEst,minCaut,maxCaut,scrapedDate,selKeywords]);
 
   const sorted = useMemo(()=>{
@@ -1169,7 +1170,7 @@ function AOsPage() {
 
 // ─── APP ───────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [agency, setAgency] = useState("PR");
+  const [agency] = useState("D1");
   const [view,   setView]   = useState("dashboard");
   const [menuOpen, setMenuOpen] = useState(false);
   const theme = THEMES[agency];
@@ -1180,7 +1181,6 @@ export default function App() {
   const A = theme.accent;
 
   const goView = v=>{ setView(v); setMenuOpen(false); };
-  const goAgency = a=>{ setAgency(a); setView("dashboard"); setMenuOpen(false); };
 
   return (
     <div style={{fontFamily:"'Segoe UI','Helvetica Neue',Arial,sans-serif",minHeight:"100vh",background:BG,color:"#1C2B4B"}}>

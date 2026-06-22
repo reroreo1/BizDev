@@ -5,6 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pi
 import attestationData from "./data.json";
 import profilesData from "./profiles.json";
 import aosRaw from "./AOs.json";
+import awardsRaw from "./awards.json";
 const { ATTS_PR, ATTS_D1 } = attestationData;
 const AOS = Array.isArray(aosRaw) ? aosRaw : (aosRaw.results || []);
 
@@ -35,6 +36,7 @@ const IcFilter= ()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
 const IcUsers = ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>;
 const IcDl    = ()=><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>;
 const IcDoc   = ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>;
+const IcTrophy= ()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>;
 
 
 
@@ -77,6 +79,23 @@ function fmtMAD(n) {
 function cleanMode(s) {
   return s ? s.replace(/^\|\s*/,"").trim() : "";
 }
+
+// ─── AWARDS HELPERS ───────────────────────────────────────────────────────────
+function parseAwardDeadline(s) {
+  if (!s) return null;
+  const m = s.match(/(\d{2})\/(\d{2})\/(\d{4})(\d{2}):(\d{2})/);
+  return m ? new Date(+m[3], +m[2]-1, +m[1], +m[4], +m[5]) : null;
+}
+function parseAwardMontant(s) {
+  if (!s || s === "-") return null;
+  const n = parseFloat(s.replace(/\s/g,"").replace(",","."));
+  return isNaN(n) || n === 0 ? null : n;
+}
+const AWARD_ACCENT  = "#16A34A";
+const AWARDS        = awardsRaw.filter(x => x.award_source);
+const AWARDS_PV     = AWARDS.filter(x => x.award_source === "EXTRAIT_PV");
+const AWARDS_SUIVI  = AWARDS.filter(x => x.award_source === "SUIVI_COMMISSION");
+const TOTAL_AWARDED = AWARDS_PV.reduce((s,x) => s + (parseAwardMontant(x.award_winner?.montant) || 0), 0);
 
 // ─── DASHBOARD ────────────────────────────────────────────────────────────────
 function Dashboard({ atts: allAtts, theme }) {
@@ -1168,6 +1187,323 @@ function AOsPage() {
   );
 }
 
+// ─── AWARDS PAGE ─────────────────────────────────────────────────────────────
+function AwardCard({ rec }) {
+  const [expanded, setExpanded] = useState(false);
+  const isPV    = rec.award_source === "EXTRAIT_PV";
+  const accent  = isPV ? "#16A34A" : "#D97706";
+  const dl      = parseAwardDeadline(rec.deadline);
+  const days    = daysUntil(dl);
+
+  const sortedEntries = useMemo(() => {
+    if (!rec.award_entries?.length) return [];
+    return [...rec.award_entries].sort((a,b) => {
+      const am = parseAwardMontant(a.montant), bm = parseAwardMontant(b.montant);
+      if (am===null&&bm===null) return 0; if (am===null) return 1; if (bm===null) return -1;
+      return am - bm;
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rec.award_entries]);
+
+  const winnerAmt = isPV ? parseAwardMontant(rec.award_winner?.montant) : null;
+  const dlLabel   = days===null?null:days<0?"Expiré":days===0?"Aujourd'hui":`dans ${days}j`;
+  const dlColor   = days===null?MU:days<0?"#9CA3AF":days===0?"#DC2626":days<=3?"#DC2626":days<=7?"#F59E0B":"#16A34A";
+  const rankSym   = i=>["①","②","③","④","⑤","⑥","⑦","⑧","⑨","⑩"][i]||(i+1)+".";
+  const rankClr   = i=>i===0?"#CA8A04":i===1?"#9CA3AF":i===2?"#B45309":MU;
+  const fmtDl     = s=>s?s.replace(/(\d{2})\/(\d{2})\/(\d{4})(\d{2}:\d{2})/,"$1/$2/$3 $4"):null;
+
+  return (
+    <div style={{background:W,border:`1px solid ${BD}`,borderLeft:`4px solid ${accent}`,borderRadius:10,padding:"18px 20px",display:"flex",flexDirection:"column",gap:12}}>
+
+      {/* Header */}
+      <div style={{display:"flex",alignItems:"flex-start",gap:8,flexWrap:"wrap"}}>
+        <span style={{fontSize:10,fontWeight:700,padding:"3px 9px",borderRadius:4,flexShrink:0,background:`${accent}18`,color:accent,border:`1px solid ${accent}40`}}>
+          {isPV?"🏆 Extrait PV":"📋 Suivi Commission"}
+        </span>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:13,fontWeight:800,color:"#1C2B4B",lineHeight:1.3}}>{rec.buyer}</div>
+          <div style={{fontSize:11,color:MU,marginTop:3}}>Réf. <strong>{rec.reference}</strong>{rec.location&&<> · 📍 {rec.location}</>}</div>
+        </div>
+        {dlLabel&&<span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:`${dlColor}15`,color:dlColor,border:`1px solid ${dlColor}40`,flexShrink:0}}>{dlLabel}</span>}
+      </div>
+
+      {/* Object */}
+      <div style={{fontSize:12,color:"#334155",lineHeight:1.6,borderLeft:`2px solid ${accent}30`,paddingLeft:10}}>{rec.object}</div>
+
+      {/* EXTRAIT PV: winner block */}
+      {isPV&&rec.award_winner&&(
+        <div style={{display:"flex",alignItems:"center",gap:14,background:"#F0FDF4",border:"1px solid #86EFAC",borderRadius:8,padding:"12px 16px",flexWrap:"wrap"}}>
+          <span style={{fontSize:20,flexShrink:0}}>🏆</span>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em",color:"#15803D",marginBottom:3}}>Lauréat du marché</div>
+            <div style={{fontSize:14,fontWeight:800,color:"#14532D"}}>{rec.award_winner.entreprise}</div>
+          </div>
+          {winnerAmt!==null?(
+            <div style={{textAlign:"right",flexShrink:0}}>
+              <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em",color:"#15803D",marginBottom:2}}>Montant attribué</div>
+              <div style={{fontSize:18,fontWeight:800,color:"#15803D",fontFamily:"Georgia,serif"}}>{fmtMAD(winnerAmt)}</div>
+              <div style={{fontSize:10,color:"#15803D90"}}>{new Intl.NumberFormat("fr-MA").format(Math.round(winnerAmt))} DH</div>
+            </div>
+          ):rec.award_winner.montant&&rec.award_winner.montant!=="-"&&(
+            <div style={{textAlign:"right",flexShrink:0}}>
+              <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em",color:"#15803D",marginBottom:2}}>Montant attribué</div>
+              <div style={{fontSize:14,fontWeight:800,color:"#15803D"}}>{rec.award_winner.montant} DH</div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* SUIVI COMMISSION: single → inline, multiple → expand */}
+      {!isPV&&rec.award_entries?.length===1&&(()=>{
+        const e=sortedEntries[0]; const amt=parseAwardMontant(e.montant);
+        return(
+          <div style={{display:"flex",alignItems:"center",gap:14,background:"#FFFBEB",border:"1px solid #FCD34D",borderRadius:8,padding:"12px 16px",flexWrap:"wrap"}}>
+            <span style={{fontSize:20,flexShrink:0}}>📋</span>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em",color:"#B45309",marginBottom:3}}>Soumissionnaire</div>
+              <div style={{fontSize:14,fontWeight:800,color:"#92400E"}}>{e.entreprise}</div>
+            </div>
+            {amt!==null?(
+              <div style={{textAlign:"right",flexShrink:0}}>
+                <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em",color:"#B45309",marginBottom:2}}>Montant proposé</div>
+                <div style={{fontSize:18,fontWeight:800,color:"#D97706",fontFamily:"Georgia,serif"}}>{fmtMAD(amt)}</div>
+                <div style={{fontSize:10,color:"#B4530990"}}>{new Intl.NumberFormat("fr-MA").format(Math.round(amt))} DH</div>
+              </div>
+            ):e.montant&&e.montant!=="-"&&(
+              <div style={{textAlign:"right",flexShrink:0}}>
+                <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em",color:"#B45309",marginBottom:2}}>Montant proposé</div>
+                <div style={{fontSize:14,fontWeight:800,color:"#D97706"}}>{e.montant} DH</div>
+              </div>
+            )}
+          </div>
+        );
+      })()}
+      {!isPV&&rec.award_entries?.length>1&&(
+        <div>
+          <button onClick={()=>setExpanded(v=>!v)} style={{display:"flex",alignItems:"center",gap:6,background:"#FFFBEB",border:"1px solid #FCD34D",borderRadius:7,padding:"8px 14px",fontSize:12,fontWeight:600,color:"#B45309",cursor:"pointer",width:"100%",justifyContent:"center",fontFamily:"inherit"}}>
+            {expanded?`▲ Réduire`:`▼ ${rec.award_entries.length} soumissionnaires — afficher le classement`}
+          </button>
+          {expanded&&(
+            <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:4}}>
+              <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em",color:MU,padding:"0 10px",marginBottom:2}}>Classement par montant croissant</div>
+              {sortedEntries.map((e,i)=>{
+                const amt=parseAwardMontant(e.montant);
+                return(
+                  <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 12px",background:i===0?"#FFFBEB":BG,borderRadius:6,border:`1px solid ${i===0?"#FCD34D":BD}`}}>
+                    <span style={{fontSize:13,fontWeight:800,color:rankClr(i),flexShrink:0,width:22,textAlign:"center"}}>{rankSym(i)}</span>
+                    <span style={{flex:1,fontSize:12,fontWeight:600,color:"#1C2B4B",minWidth:0}}>{e.entreprise}</span>
+                    <span style={{fontSize:12,fontWeight:700,color:amt?rankClr(i):MU,fontFamily:"Georgia,serif",flexShrink:0}}>{amt?fmtMAD(amt):"Non communiqué"}</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Footer: deadline + link */}
+      <div style={{display:"flex",gap:8,alignItems:"center",paddingTop:4,borderTop:`1px solid ${BD}`,flexWrap:"wrap"}}>
+        {rec.deadline&&<span style={{fontSize:11,color:MU,flex:1}}>📅 Échéance : <strong style={{color:dlColor}}>{fmtDl(rec.deadline)}</strong></span>}
+        <a href={rec.detail_url} target="_blank" rel="noopener noreferrer"
+          style={{display:"flex",alignItems:"center",gap:6,background:"#1C2B4B",color:W,borderRadius:7,padding:"8px 14px",fontSize:11,fontWeight:700,textDecoration:"none",flexShrink:0}}>
+          <IcLink/> Voir la fiche
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function AwardsPage() {
+  const PAGE_SIZE = 20;
+  const [query,      setQuery]      = useState("");
+  const [selSources, setSelSources] = useState(["EXTRAIT_PV","SUIVI_COMMISSION"]);
+  const [sortBy,     setSortBy]     = useState("deadline");
+  const [minMontant, setMinMontant] = useState("");
+  const [maxMontant, setMaxMontant] = useState("");
+  const [locFilter,  setLocFilter]  = useState("");
+  const [page,       setPage]       = useState(1);
+
+  const goPage = p => { setPage(p); window.scrollTo({top:0,behavior:"smooth"}); };
+  const togSource = s => { setSelSources(p=>p.includes(s)?(p.length>1?p.filter(x=>x!==s):p):[...p,s]); setPage(1); };
+  const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+
+  const filtered = useMemo(()=>{
+    let list = AWARDS;
+    if (selSources.length<2) list = list.filter(x=>selSources.includes(x.award_source));
+    if (query) {
+      const q = norm(query);
+      list = list.filter(x=>
+        norm(x.buyer||"").includes(q)||
+        norm(x.object||"").includes(q)||
+        norm(x.reference||"").includes(q)||
+        norm(x.award_winner?.entreprise||"").includes(q)||
+        (x.award_entries||[]).some(e=>norm(e.entreprise||"").includes(q))
+      );
+    }
+    if (locFilter) { const q=norm(locFilter); list=list.filter(x=>norm(x.location||"").includes(q)); }
+    if (minMontant) {
+      const min=parseFloat(minMontant);
+      list=list.filter(x=>{
+        const m=parseAwardMontant(x.award_winner?.montant);
+        if (m!==null) return m>=min;
+        return (x.award_entries||[]).some(e=>{const em=parseAwardMontant(e.montant);return em!==null&&em>=min;});
+      });
+    }
+    if (maxMontant) {
+      const max=parseFloat(maxMontant);
+      list=list.filter(x=>{
+        const m=parseAwardMontant(x.award_winner?.montant);
+        if (m!==null) return m<=max;
+        return (x.award_entries||[]).some(e=>{const em=parseAwardMontant(e.montant);return em!==null&&em<=max;});
+      });
+    }
+    return list;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[query,selSources,minMontant,maxMontant,locFilter]);
+
+  const sorted = useMemo(()=>{
+    const list=[...filtered];
+    if (sortBy==="montant") {
+      list.sort((a,b)=>{ const am=parseAwardMontant(a.award_winner?.montant),bm=parseAwardMontant(b.award_winner?.montant); if(am===null&&bm===null)return 0; if(am===null)return 1; if(bm===null)return -1; return bm-am; });
+    } else if (sortBy==="buyer") {
+      list.sort((a,b)=>(a.buyer||"").localeCompare(b.buyer||"","fr"));
+    } else {
+      list.sort((a,b)=>{ const da=parseAwardDeadline(a.deadline),db=parseAwardDeadline(b.deadline); if(!da&&!db)return 0; if(!da)return 1; if(!db)return -1; return db-da; });
+    }
+    return list;
+  },[filtered,sortBy]);
+
+  const totalPages = Math.max(1,Math.ceil(sorted.length/PAGE_SIZE));
+  const paginated  = sorted.slice((page-1)*PAGE_SIZE, page*PAGE_SIZE);
+  const hasFilter  = query||selSources.length<2||minMontant||maxMontant||locFilter;
+  const reset      = ()=>{ setQuery(""); setSelSources(["EXTRAIT_PV","SUIVI_COMMISSION"]); setMinMontant(""); setMaxMontant(""); setLocFilter(""); setPage(1); };
+
+  const pageNums = ()=>{
+    if (totalPages<=7) return Array.from({length:totalPages},(_,i)=>i+1);
+    if (page<=4)            return [1,2,3,4,5,"…",totalPages];
+    if (page>=totalPages-3) return [1,"…",totalPages-4,totalPages-3,totalPages-2,totalPages-1,totalPages];
+    return [1,"…",page-1,page,page+1,"…",totalPages];
+  };
+
+  const pvCount    = filtered.filter(x=>x.award_source==="EXTRAIT_PV").length;
+  const suiviCount = filtered.filter(x=>x.award_source==="SUIVI_COMMISSION").length;
+  const A = AWARD_ACCENT;
+
+  const numInput=(value,setter,ph)=>(
+    <input value={value} onChange={e=>{setter(e.target.value);setPage(1);}} type="number" placeholder={ph}
+      style={{width:110,background:BG,border:`1px solid ${BD}`,borderRadius:6,padding:"7px 10px",fontSize:12,color:"#1C2B4B",fontFamily:"inherit",outline:"none"}}/>
+  );
+
+  return (
+    <div style={{animation:"fi .4s ease"}}>
+      {/* KPI strip */}
+      <div className="kpi-grid" style={{marginBottom:18}}>
+        <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"16px",borderLeft:"4px solid #6366F1"}}>
+          <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Total résultats</div>
+          <div style={{fontSize:22,fontWeight:800,color:"#1C2B4B",fontFamily:"Georgia,serif",lineHeight:1}}>{AWARDS.length}</div>
+          <div style={{fontSize:10,color:MU,marginTop:4}}>PV + Suivi commission</div>
+        </div>
+        <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"16px",borderLeft:`4px solid ${A}`}}>
+          <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Marchés attribués</div>
+          <div style={{fontSize:22,fontWeight:800,color:"#16A34A",fontFamily:"Georgia,serif",lineHeight:1}}>{AWARDS_PV.length}</div>
+          <div style={{fontSize:10,color:MU,marginTop:4}}>lauréats déclarés</div>
+        </div>
+        <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"16px",borderLeft:"4px solid #D97706"}}>
+          <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Suivis commission</div>
+          <div style={{fontSize:22,fontWeight:800,color:"#D97706",fontFamily:"Georgia,serif",lineHeight:1}}>{AWARDS_SUIVI.length}</div>
+          <div style={{fontSize:10,color:MU,marginTop:4}}>résultats partiels</div>
+        </div>
+        <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"16px",borderLeft:"4px solid #7C3AED"}}>
+          <div style={{fontSize:9,color:MU,textTransform:"uppercase",letterSpacing:".1em",fontWeight:700,marginBottom:8}}>Montant total attribué</div>
+          <div style={{fontSize:22,fontWeight:800,color:"#7C3AED",fontFamily:"Georgia,serif",lineHeight:1}}>{fmtMAD(TOTAL_AWARDED)}</div>
+          <div style={{fontSize:10,color:MU,marginTop:4}}>lauréats avec montant</div>
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div style={{background:W,border:`1px solid ${BD}`,borderRadius:10,padding:"16px",marginBottom:14,display:"flex",flexDirection:"column",gap:12}}>
+        {/* Row 1: search + sort */}
+        <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+          <div style={{flex:"1 1 220px",display:"flex",alignItems:"center",gap:8,background:BG,border:`1px solid ${BD}`,borderRadius:7,padding:"8px 12px"}}>
+            <IcSrch/>
+            <input value={query} onChange={e=>{setQuery(e.target.value);setPage(1);}} placeholder="Acheteur, objet, référence, entreprise…"
+              style={{border:"none",background:"transparent",outline:"none",fontSize:13,color:"#1C2B4B",width:"100%",fontFamily:"inherit"}}/>
+            {query&&<button onClick={()=>{setQuery("");setPage(1);}} style={{border:"none",background:"none",cursor:"pointer",color:MU,padding:0,display:"flex",alignItems:"center"}}><IcClose/></button>}
+          </div>
+          <select value={sortBy} onChange={e=>setSortBy(e.target.value)} style={{background:BG,border:`1px solid ${BD}`,borderRadius:7,padding:"8px 12px",fontSize:12,color:"#1C2B4B",fontFamily:"inherit",cursor:"pointer",outline:"none"}}>
+            <option value="deadline">Tri : Date limite ↓</option>
+            <option value="montant">Tri : Montant ↓</option>
+            <option value="buyer">Tri : Acheteur A→Z</option>
+          </select>
+        </div>
+        {/* Row 2: source chips */}
+        <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center"}}>
+          <span style={{fontSize:10,color:MU,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em"}}>Source :</span>
+          {[["EXTRAIT_PV","🏆 Extrait PV","#16A34A",AWARDS_PV.length],["SUIVI_COMMISSION","📋 Suivi Commission","#D97706",AWARDS_SUIVI.length]].map(([key,label,color,count])=>(
+            <button key={key} onClick={()=>togSource(key)} style={{padding:"4px 11px",borderRadius:20,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit",border:`1.5px solid ${selSources.includes(key)?color:BD}`,background:selSources.includes(key)?`${color}18`:W,color:selSources.includes(key)?color:MU,transition:"all .15s"}}>
+              {label} <span style={{opacity:.6}}>({count})</span>
+            </button>
+          ))}
+        </div>
+        {/* Row 3: montant + ville */}
+        <div style={{display:"flex",gap:16,flexWrap:"wrap",alignItems:"center",paddingTop:4,borderTop:`1px solid ${BD}`}}>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <span style={{fontSize:11,color:MU,fontWeight:600,whiteSpace:"nowrap"}}>Montant (DH) :</span>
+            {numInput(minMontant,setMinMontant,"Min")}
+            <span style={{fontSize:11,color:MU}}>—</span>
+            {numInput(maxMontant,setMaxMontant,"Max")}
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <span style={{fontSize:11,color:MU,fontWeight:600,whiteSpace:"nowrap"}}>Ville :</span>
+            <input value={locFilter} onChange={e=>{setLocFilter(e.target.value);setPage(1);}} placeholder="ex. CASABLANCA"
+              style={{width:140,background:BG,border:`1px solid ${BD}`,borderRadius:6,padding:"7px 10px",fontSize:12,color:"#1C2B4B",fontFamily:"inherit",outline:"none"}}/>
+            {locFilter&&<button onClick={()=>{setLocFilter("");setPage(1);}} style={{border:"none",background:"none",cursor:"pointer",color:MU,padding:0,display:"flex",alignItems:"center"}}><IcClose/></button>}
+          </div>
+          {hasFilter&&<button onClick={reset} style={{marginLeft:"auto",border:"none",background:"none",color:A,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Réinitialiser tout</button>}
+        </div>
+      </div>
+
+      {/* Count */}
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14,flexWrap:"wrap",gap:8}}>
+        <span style={{fontSize:13,fontWeight:700,color:"#1C2B4B"}}>
+          {sorted.length} résultat{sorted.length>1?"s":""}{" "}
+          <span style={{fontSize:11,fontWeight:400,color:MU}}>({pvCount} PV · {suiviCount} commission)</span>
+        </span>
+        <div style={{display:"flex",gap:8,alignItems:"center"}}>
+          {hasFilter&&<span style={{background:`${A}20`,color:A,fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:10}}>Filtré</span>}
+          {totalPages>1&&<span style={{fontSize:11,color:MU}}>Page {page}/{totalPages}</span>}
+        </div>
+      </div>
+
+      {/* List */}
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {sorted.length===0
+          ? <div style={{textAlign:"center",padding:50,color:MU,background:W,borderRadius:10,border:`1px solid ${BD}`}}>Aucun résultat ne correspond aux filtres.</div>
+          : paginated.map(rec=><AwardCard key={rec.ref_consultation} rec={rec}/>)
+        }
+      </div>
+
+      {/* Pagination */}
+      {totalPages>1&&(
+        <div style={{display:"flex",alignItems:"center",gap:6,justifyContent:"center",marginTop:24,flexWrap:"wrap"}}>
+          <button onClick={()=>goPage(Math.max(1,page-1))} disabled={page===1}
+            style={{width:34,height:34,border:`1px solid ${BD}`,borderRadius:7,background:page===1?BG:W,color:page===1?MU:"#1C2B4B",cursor:page===1?"default":"pointer",fontSize:14,fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center"}}>‹</button>
+          {pageNums().map((n,i)=>
+            n==="…"
+              ?<span key={`e${i}`} style={{width:34,textAlign:"center",fontSize:13,color:MU}}>…</span>
+              :<button key={n} onClick={()=>goPage(n)}
+                  style={{width:34,height:34,border:`1.5px solid ${n===page?A:BD}`,borderRadius:7,background:n===page?A:W,color:n===page?W:"#1C2B4B",cursor:"pointer",fontSize:12,fontWeight:600,fontFamily:"inherit"}}>
+                  {n}
+                </button>
+          )}
+          <button onClick={()=>goPage(Math.min(totalPages,page+1))} disabled={page===totalPages}
+            style={{width:34,height:34,border:`1px solid ${BD}`,borderRadius:7,background:page===totalPages?BG:W,color:page===totalPages?MU:"#1C2B4B",cursor:page===totalPages?"default":"pointer",fontSize:14,fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center"}}>›</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── APP ───────────────────────────────────────────────────────────────────────
 export default function App() {
   const [agency] = useState("D1");
@@ -1247,7 +1583,7 @@ export default function App() {
 
           {/* Nav desktop */}
           <nav className="nav-desktop" style={{gap:2,marginLeft:16}}>
-            {[["dashboard",<IcGrid/>,"Dashboard"],["search",<IcFind/>,"Attestations"],["profiles",<IcUsers/>,"CVthèque"],["aos",<IcDoc/>,"Appels d'Offres"]].map(([v,ic,l])=>(
+            {[["dashboard",<IcGrid/>,"Dashboard"],["search",<IcFind/>,"Attestations"],["profiles",<IcUsers/>,"CVthèque"],["aos",<IcDoc/>,"Appels d'Offres"],["awards",<IcTrophy/>,"Extrait de PV"]].map(([v,ic,l])=>(
               <button key={v} onClick={()=>goView(v)} style={{background:view===v?`${A}18`:"none",border:"none",cursor:"pointer",fontFamily:"inherit",fontSize:12,fontWeight:600,padding:"7px 12px",borderRadius:6,color:view===v?(theme.key==="D1"?"#8B6800":A):MU,display:"flex",alignItems:"center",gap:6,transition:"all .15s"}}>
                 {ic} {l}
               </button>
@@ -1277,7 +1613,7 @@ export default function App() {
         {menuOpen&&(
           <div style={{background:W,borderTop:`1px solid ${BD}`,padding:"12px 16px",animation:"slideDown .2s ease",display:"flex",flexDirection:"column",gap:6}}>
             {/* Nav */}
-            {[["dashboard",<IcGrid/>,"Dashboard"],["search",<IcFind/>,"Attestations"],["profiles",<IcUsers/>,"CVthèque"],["aos",<IcDoc/>,"Appels d'Offres"]].map(([v,ic,l])=>(
+            {[["dashboard",<IcGrid/>,"Dashboard"],["search",<IcFind/>,"Attestations"],["profiles",<IcUsers/>,"CVthèque"],["aos",<IcDoc/>,"Appels d'Offres"],["awards",<IcTrophy/>,"Extrait de PV"]].map(([v,ic,l])=>(
               <button key={v} onClick={()=>goView(v)} style={{background:view===v?`${A}12`:BG,border:`1px solid ${view===v?A:BD}`,borderRadius:8,padding:"11px 14px",cursor:"pointer",fontFamily:"inherit",fontSize:13,fontWeight:600,color:view===v?(theme.key==="D1"?"#8B6800":A):"#1C2B4B",display:"flex",alignItems:"center",gap:10,transition:"all .15s",textAlign:"left"}}>
                 {ic} {l}
               </button>
@@ -1303,6 +1639,7 @@ export default function App() {
         {view==="search"   &&<Search    atts={allAtts} theme={theme}/>}
         {view==="profiles" &&<Profiles  theme={theme}/>}
         {view==="aos"      &&<AOsPage/>}
+        {view==="awards"   &&<AwardsPage/>}
       </div>
     </div>
   );

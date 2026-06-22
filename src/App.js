@@ -1218,7 +1218,7 @@ function AwardCard({ rec }) {
       {/* Header */}
       <div style={{display:"flex",alignItems:"flex-start",gap:8,flexWrap:"wrap"}}>
         <span style={{fontSize:10,fontWeight:700,padding:"3px 9px",borderRadius:4,flexShrink:0,background:`${accent}18`,color:accent,border:`1px solid ${accent}40`}}>
-          {isPV?"🏆 Extrait PV":"📋 Suivi Commission"}
+          {isPV?"Extrait PV":"Suivi Commission"}
         </span>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:13,fontWeight:800,color:"#1C2B4B",lineHeight:1.3}}>{rec.buyer}</div>
@@ -1233,7 +1233,7 @@ function AwardCard({ rec }) {
       {/* EXTRAIT PV: winner block */}
       {isPV&&rec.award_winner&&(
         <div style={{display:"flex",alignItems:"center",gap:14,background:"#F0FDF4",border:"1px solid #86EFAC",borderRadius:8,padding:"12px 16px",flexWrap:"wrap"}}>
-          <span style={{fontSize:20,flexShrink:0}}>🏆</span>
+          
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em",color:"#15803D",marginBottom:3}}>Lauréat du marché</div>
             <div style={{fontSize:14,fontWeight:800,color:"#14532D"}}>{rec.award_winner.entreprise}</div>
@@ -1258,7 +1258,7 @@ function AwardCard({ rec }) {
         const e=sortedEntries[0]; const amt=parseAwardMontant(e.montant);
         return(
           <div style={{display:"flex",alignItems:"center",gap:14,background:"#FFFBEB",border:"1px solid #FCD34D",borderRadius:8,padding:"12px 16px",flexWrap:"wrap"}}>
-            <span style={{fontSize:20,flexShrink:0}}>📋</span>
+            
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em",color:"#B45309",marginBottom:3}}>Soumissionnaire</div>
               <div style={{fontSize:14,fontWeight:800,color:"#92400E"}}>{e.entreprise}</div>
@@ -1439,7 +1439,7 @@ function AwardsPage() {
         {/* Row 2: source chips */}
         <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center"}}>
           <span style={{fontSize:10,color:MU,fontWeight:700,textTransform:"uppercase",letterSpacing:".1em"}}>Source :</span>
-          {[["EXTRAIT_PV","🏆 Extrait PV","#16A34A",AWARDS_PV.length],["SUIVI_COMMISSION","📋 Suivi Commission","#D97706",AWARDS_SUIVI.length]].map(([key,label,color,count])=>(
+          {[["EXTRAIT_PV","Extrait PV","#16A34A",AWARDS_PV.length],["SUIVI_COMMISSION","Suivi Commission","#D97706",AWARDS_SUIVI.length]].map(([key,label,color,count])=>(
             <button key={key} onClick={()=>togSource(key)} style={{padding:"4px 11px",borderRadius:20,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"inherit",border:`1.5px solid ${selSources.includes(key)?color:BD}`,background:selSources.includes(key)?`${color}18`:W,color:selSources.includes(key)?color:MU,transition:"all .15s"}}>
               {label} <span style={{opacity:.6}}>({count})</span>
             </button>
